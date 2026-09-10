@@ -73,7 +73,7 @@ public sealed class BannerController : ControllerBase
 
         try
         {
-            ImageType artwork = settings.ArtworkKind == "banner" ? ImageType.Banner : ImageType.Backdrop;
+            const ImageType artwork = ImageType.Backdrop;
             var request = new InternalItemsQuery(user)
             {
                 AncestorIds = [sourceId],
@@ -105,13 +105,13 @@ public sealed class BannerController : ControllerBase
                     Title = media.Name,
                     MediaKind = media.GetBaseItemKind() == BaseItemKind.Series ? "series" : "movie",
                     Artwork = artwork.ToString(),
-                    Logo = artwork != ImageType.Banner && media.HasImage(ImageType.Logo),
+                    Logo = media.HasImage(ImageType.Logo),
                     Score = media.CommunityRating is float score ? Math.Round(score, 1) : null
                 });
             }
 
             string? notice = slides.Count == 0
-                ? $"Keine passenden Medien mit {settings.ArtworkKind}.jpg gefunden."
+                ? "Keine passenden Medien mit backdrop.jpg gefunden."
                 : null;
             return Ok(BuildPayload(settings, slides, notice));
         }
@@ -201,6 +201,7 @@ public sealed class BannerController : ControllerBase
             RotateMilliseconds = settings.RotationSeconds * 1000,
             Rating = settings.RatingsVisible,
             Size = settings.DisplaySize,
+            FullBackdrop = settings.FullBackdrop,
             Anchor = settings.VerticalFocus,
             Arrows = settings.ArrowButtons,
             Dots = settings.PageIndicators,

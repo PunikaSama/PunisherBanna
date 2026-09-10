@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v202";
-    if (window.__punisherBannaV202 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v230";
+    if (window.__punisherBannaV230 || customElements.get(componentName)) {
         return;
     }
 
@@ -39,10 +39,6 @@
             position: relative;
             touch-action: pan-y;
         }
-        :host([artwork="banner"]) .stage {
-            aspect-ratio: var(--artwork-ratio, 1000 / 185);
-            height: auto;
-        }
         .stage.dragging { cursor: grabbing; }
         .card {
             -webkit-user-drag: none;
@@ -75,7 +71,6 @@
             position: absolute;
             width: 100%;
         }
-        :host([artwork="banner"]) .artwork { object-fit: contain; object-position: center; }
         .shade {
             background:
                 linear-gradient(90deg, rgba(0, 0, 0, .87), rgba(0, 0, 0, .46) 40%, rgba(0, 0, 0, .03) 74%),
@@ -164,14 +159,14 @@
         }
         .page.current { background: #fff; width: 1.4rem; }
         @media (min-width: 601px) {
-            :host([artwork="backdrop"]) { max-width: 80rem; }
-            :host([artwork="backdrop"][size="small"]) { max-width: 64rem; }
-            :host([artwork="backdrop"][size="large"]) { max-width: 96rem; }
-            :host([artwork="backdrop"]) .stage {
+            :host([fit="full"]) { max-width: 80rem; }
+            :host([fit="full"][size="small"]) { max-width: 64rem; }
+            :host([fit="full"][size="large"]) { max-width: 96rem; }
+            :host([fit="full"]) .stage {
                 aspect-ratio: var(--artwork-ratio, 16 / 9);
                 height: auto;
             }
-            :host([artwork="backdrop"]) .artwork { object-fit: contain; }
+            :host([fit="full"]) .artwork { object-fit: contain; }
         }
         @media (max-width: 600px) {
             .stage { height: var(--mobile-height); }
@@ -223,10 +218,8 @@
             this.payload = payload;
             this.position = 0;
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
-            const bannerMode = payload.slides[0]?.artwork === "Banner";
-            this.setAttribute("artwork", bannerMode ? "banner" : "backdrop");
-            this.style.maxWidth = bannerMode ? "1150px" : "";
-            this.stage.style.setProperty("--artwork-ratio", bannerMode ? "1000 / 185" : "16 / 9");
+            this.setAttribute("fit", payload.fullBackdrop === true ? "full" : "cover");
+            this.stage.style.setProperty("--artwork-ratio", "16 / 9");
             const anchors = { top: "center top", center: "center center", bottom: "center bottom" };
             this.stage.style.setProperty("--image-anchor", anchors[payload.anchor] || anchors.center);
             this.renderCards();
@@ -275,7 +268,6 @@
             card.setAttribute("aria-hidden", index === 0 ? "false" : "true");
             card.setAttribute("aria-label", `${slide.title} öffnen`);
 
-            const isBanner = slide.artwork === "Banner";
             const artwork = document.createElement("img");
             artwork.className = "artwork";
             artwork.alt = "";
@@ -288,32 +280,30 @@
                     this.applyArtworkGeometry(card);
                 }
             }, { once: true });
-            artwork.src = this.imageUrl(slide.id, slide.artwork, isBanner ? null : 1920);
+            artwork.src = this.imageUrl(slide.id, slide.artwork, 1920);
             card.appendChild(artwork);
 
             const shade = document.createElement("div");
             shade.className = "shade";
             card.appendChild(shade);
 
-            if (!isBanner) {
-                const caption = document.createElement("div");
-                caption.className = "caption";
-                if (slide.logo) {
-                    const logo = document.createElement("img");
-                    logo.className = "media-logo";
-                    logo.src = this.imageUrl(slide.id, "Logo", 700);
-                    logo.alt = slide.title;
-                    logo.draggable = false;
-                    logo.loading = index === 0 ? "eager" : "lazy";
-                    logo.addEventListener("error", () => {
-                        logo.replaceWith(this.makeTitle(slide.title));
-                    }, { once: true });
-                    caption.appendChild(logo);
-                } else {
-                    caption.appendChild(this.makeTitle(slide.title));
-                }
-                card.appendChild(caption);
+            const caption = document.createElement("div");
+            caption.className = "caption";
+            if (slide.logo) {
+                const logo = document.createElement("img");
+                logo.className = "media-logo";
+                logo.src = this.imageUrl(slide.id, "Logo", 700);
+                logo.alt = slide.title;
+                logo.draggable = false;
+                logo.loading = index === 0 ? "eager" : "lazy";
+                logo.addEventListener("error", () => {
+                    logo.replaceWith(this.makeTitle(slide.title));
+                }, { once: true });
+                caption.appendChild(logo);
+            } else {
+                caption.appendChild(this.makeTitle(slide.title));
             }
+            card.appendChild(caption);
 
             const facts = document.createElement("div");
             facts.className = "facts";
@@ -475,16 +465,13 @@
         }
 
         applyArtworkGeometry(card) {
-            if (!card) {
+            if (this.getAttribute("fit") !== "full" || !card) {
                 return;
             }
             const width = Number(card.dataset.artworkWidth);
             const height = Number(card.dataset.artworkHeight);
             if (Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0) {
                 this.stage.style.setProperty("--artwork-ratio", `${width} / ${height}`);
-                if (this.getAttribute("artwork") === "banner") {
-                    this.style.maxWidth = `${Math.min(Math.round(width * 1.15), 1280)}px`;
-                }
             }
         }
 
@@ -619,6 +606,6 @@
         schedule();
     }
 
-    window.__punisherBannaV202 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV230 = { observer: observer, schedule: schedule };
     start();
 }());

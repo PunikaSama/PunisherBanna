@@ -19,6 +19,9 @@ public sealed class CarouselPayload
     [JsonPropertyName("size")]
     public required string Size { get; init; }
 
+    [JsonPropertyName("fullBackdrop")]
+    public bool FullBackdrop { get; init; }
+
     [JsonPropertyName("anchor")]
     public required string Anchor { get; init; }
 

@@ -39,13 +39,12 @@
                             </select>
                         </div>
 
-                        <div class="selectContainer">
-                            <label class="selectLabel" for="ArtworkKind">Verwendetes Bannerbild</label>
-                            <select is="emby-select" id="ArtworkKind" class="emby-select-withcolor">
-                                <option value="backdrop">Backdrop (backdrop.jpg)</option>
-                                <option value="banner">Banner (banner.jpg)</option>
-                            </select>
-                            <div class="fieldDescription">Medien ohne den gewählten Bildtyp werden übersprungen.</div>
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="FullBackdrop" type="checkbox">
+                            <span>Backdrop auf Desktop vollständig anzeigen</span>
+                        </label>
+                        <div class="fieldDescription" style="margin-bottom:1em">
+                            Zeigt das vollständige Bild im tatsächlichen Seitenverhältnis. Deaktiviert füllt das Backdrop den Banner und kann dabei beschnitten werden.
                         </div>
 
                         <div class="selectContainer">
@@ -218,7 +217,7 @@
                         element("DisplaySize").value = ["small", "standard", "large"].includes(settings.DisplaySize)
                             ? settings.DisplaySize
                             : "standard";
-                        element("ArtworkKind").value = settings.ArtworkKind === "banner" ? "banner" : "backdrop";
+                        element("FullBackdrop").checked = settings.FullBackdrop === true;
                         element("VerticalFocus").value = ["top", "center", "bottom"].includes(settings.VerticalFocus)
                             ? settings.VerticalFocus
                             : "center";
@@ -246,7 +245,7 @@
                         settings.SourceLibrary = element("SourceLibrary").value;
                         settings.VisibleSlides = boundedInteger(element("VisibleSlides").value, 1, 20, 5);
                         settings.DisplaySize = element("DisplaySize").value;
-                        settings.ArtworkKind = element("ArtworkKind").value;
+                        settings.FullBackdrop = element("FullBackdrop").checked;
                         settings.VerticalFocus = element("VerticalFocus").value;
                         settings.ArrowButtons = element("ArrowButtons").checked;
                         settings.PageIndicators = element("PageIndicators").checked;

@@ -13,7 +13,6 @@ public sealed class SettingsTests
             VisibleSlides = 200,
             RotationSeconds = -1,
             DisplaySize = "wide",
-            ArtworkKind = "thumb",
             VerticalFocus = "left"
         };
 
@@ -23,24 +22,24 @@ public sealed class SettingsTests
         Assert.Equal(20, settings.VisibleSlides);
         Assert.Equal(3, settings.RotationSeconds);
         Assert.Equal("standard", settings.DisplaySize);
-        Assert.Equal("backdrop", settings.ArtworkKind);
         Assert.Equal("center", settings.VerticalFocus);
+        Assert.False(settings.FullBackdrop);
         Assert.False(settings.ArrowButtons);
         Assert.True(settings.PageIndicators);
     }
 
     [Theory]
-    [InlineData("small", "backdrop", "top")]
-    [InlineData("standard", "banner", "center")]
-    [InlineData(" LARGE ", " BANNER ", " BOTTOM ")]
-    public void Sanitize_NormalizesSupportedOptions(string size, string artwork, string focus)
+    [InlineData("small", "top")]
+    [InlineData("standard", "center")]
+    [InlineData(" LARGE ", " BOTTOM ")]
+    public void Sanitize_NormalizesSupportedOptions(string size, string focus)
     {
         Guid library = Guid.NewGuid();
         var settings = new Settings
         {
             SourceLibrary = library.ToString("B"),
             DisplaySize = size,
-            ArtworkKind = artwork,
+            FullBackdrop = true,
             VerticalFocus = focus
         };
 
@@ -48,7 +47,7 @@ public sealed class SettingsTests
 
         Assert.Equal(library.ToString("D"), settings.SourceLibrary);
         Assert.Equal(size.Trim().ToLowerInvariant(), settings.DisplaySize);
-        Assert.Equal(artwork.Trim().ToLowerInvariant(), settings.ArtworkKind);
+        Assert.True(settings.FullBackdrop);
         Assert.Equal(focus.Trim().ToLowerInvariant(), settings.VerticalFocus);
     }
 }

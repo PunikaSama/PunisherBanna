@@ -16,7 +16,7 @@ public sealed class Settings : BasePluginConfiguration
 
     public string DisplaySize { get; set; } = "standard";
 
-    public string ArtworkKind { get; set; } = "backdrop";
+    public bool FullBackdrop { get; set; }
 
     public string VerticalFocus { get; set; } = "center";
 
@@ -37,9 +37,6 @@ public sealed class Settings : BasePluginConfiguration
             "large" => "large",
             _ => "standard"
         };
-        ArtworkKind = string.Equals(ArtworkKind?.Trim(), "banner", StringComparison.OrdinalIgnoreCase)
-            ? "banner"
-            : "backdrop";
         VerticalFocus = VerticalFocus?.Trim().ToLowerInvariant() switch
         {
             "top" => "top",

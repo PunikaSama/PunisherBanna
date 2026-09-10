@@ -24,7 +24,7 @@ for (const required of [
     "SourceLibrary",
     "VisibleSlides",
     "DisplaySize",
-    "ArtworkKind",
+    "FullBackdrop",
     "VerticalFocus",
     "ArrowButtons",
     "PageIndicators",
@@ -40,7 +40,7 @@ for (const required of [
     }
 }
 
-if (html.includes("LibraryLoadStatus") || html.includes("wie bisher") || html.includes(">1.0.0.0<")) {
+if (html.includes("LibraryLoadStatus") || html.includes("ArtworkKind") || html.includes("banner.jpg") || html.includes("wie bisher") || html.includes(">1.0.0.0<")) {
     throw new Error("Removed settings text was reintroduced.");
 }
 
@@ -52,19 +52,17 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v202",
+    "punisher-banna-slider-v230",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
     "pointermove",
     "touch-action: pan-y",
-    ":host([artwork=\"banner\"])",
-    "isBanner ? null : 1920",
-    "if (!isBanner)",
-    "width * 1.15",
+    "payload.fullBackdrop === true",
     "artwork.naturalWidth",
     "applyArtworkGeometry",
-    ":host([artwork=\"backdrop\"]) .artwork { object-fit: contain; }",
+    "this.getAttribute(\"fit\") !== \"full\"",
+    ":host([fit=\"full\"]) .artwork { object-fit: contain; }",
     "runtime.timer !== null",
     "window.setInterval(schedule, 2000)",
     "schedule: schedule",
@@ -74,4 +72,8 @@ for (const required of [
     if (!client.includes(required)) {
         throw new Error(`Missing webclient behavior: ${required}`);
     }
+}
+
+if (client.includes("isBanner") || client.includes("artwork=\"banner\"") || client.includes("__punisherBannaV202")) {
+    throw new Error("Removed banner.jpg behavior was reintroduced.");
 }
