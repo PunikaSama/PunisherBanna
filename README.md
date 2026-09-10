@@ -7,8 +7,8 @@ PunisherBanna adds a customizable banner carousel with random movies or TV shows
 - Select a single media library
 - Display between 1 and 20 random movies or TV shows
 - Use either `backdrop.jpg` or `banner.jpg` artwork
-- Preserve the original resolution and aspect ratio of `banner.jpg` without an additional media logo
-- Show the media logo or title text
+- Preserve the original resolution and aspect ratio of `banner.jpg`, with only limited enlargement and no additional title or media logo
+- Show the media logo or title text when using backdrop artwork
 - Optionally display the community rating
 - Small, standard, and large size presets
 - Adjustable vertical image position

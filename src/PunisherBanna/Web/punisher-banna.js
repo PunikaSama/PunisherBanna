@@ -111,11 +111,15 @@
         }
         .facts {
             align-items: center;
+            bottom: clamp(1.4rem, 2.3vw, 2.4rem);
             display: flex;
             font-size: clamp(.86rem, 1.25vw, 1.05rem);
             font-weight: 600;
             gap: .75rem;
+            left: clamp(2rem, 5vw, 5rem);
+            position: absolute;
             text-shadow: 0 .1rem .3rem #000;
+            z-index: 2;
         }
         .score { color: #f7ce46; }
         .step {
@@ -162,6 +166,7 @@
         @media (max-width: 600px) {
             .stage { height: var(--mobile-height); }
             .caption { bottom: 2.1rem; left: 1.35rem; max-width: 75%; }
+            .facts { bottom: 1.5rem; left: 1.35rem; }
             .step { height: 2.35rem; width: 2.35rem; }
             .back { left: .35rem; }
             .forward { right: .35rem; }
@@ -210,7 +215,7 @@
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
             const bannerMode = payload.slides[0]?.artwork === "Banner";
             this.setAttribute("artwork", bannerMode ? "banner" : "backdrop");
-            this.style.maxWidth = bannerMode ? "1000px" : "100%";
+            this.style.maxWidth = bannerMode ? "1150px" : "100%";
             this.stage.style.setProperty("--banner-ratio", "1000 / 185");
             const anchors = { top: "center top", center: "center center", bottom: "center bottom" };
             this.stage.style.setProperty("--image-anchor", anchors[payload.anchor] || anchors.center);
@@ -282,21 +287,24 @@
             shade.className = "shade";
             card.appendChild(shade);
 
-            const caption = document.createElement("div");
-            caption.className = "caption";
-            if (!isBanner && slide.logo) {
-                const logo = document.createElement("img");
-                logo.className = "media-logo";
-                logo.src = this.imageUrl(slide.id, "Logo", 700);
-                logo.alt = slide.title;
-                logo.draggable = false;
-                logo.loading = index === 0 ? "eager" : "lazy";
-                logo.addEventListener("error", () => {
-                    logo.replaceWith(this.makeTitle(slide.title));
-                }, { once: true });
-                caption.appendChild(logo);
-            } else {
-                caption.appendChild(this.makeTitle(slide.title));
+            if (!isBanner) {
+                const caption = document.createElement("div");
+                caption.className = "caption";
+                if (slide.logo) {
+                    const logo = document.createElement("img");
+                    logo.className = "media-logo";
+                    logo.src = this.imageUrl(slide.id, "Logo", 700);
+                    logo.alt = slide.title;
+                    logo.draggable = false;
+                    logo.loading = index === 0 ? "eager" : "lazy";
+                    logo.addEventListener("error", () => {
+                        logo.replaceWith(this.makeTitle(slide.title));
+                    }, { once: true });
+                    caption.appendChild(logo);
+                } else {
+                    caption.appendChild(this.makeTitle(slide.title));
+                }
+                card.appendChild(caption);
             }
 
             const facts = document.createElement("div");
@@ -311,8 +319,7 @@
                 score.textContent = `★ ${numericScore.toFixed(1)}`;
                 facts.appendChild(score);
             }
-            caption.appendChild(facts);
-            card.appendChild(caption);
+            card.appendChild(facts);
             return card;
         }
 
@@ -467,7 +474,7 @@
             const height = Number(card.dataset.artworkHeight);
             if (Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0) {
                 this.stage.style.setProperty("--banner-ratio", `${width} / ${height}`);
-                this.style.maxWidth = `${width}px`;
+                this.style.maxWidth = `${Math.min(Math.round(width * 1.15), 1280)}px`;
             }
         }
 

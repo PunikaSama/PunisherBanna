@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.1.0.0",
+        "changelog": "Bannerbilder werden leicht vergrößert, aber zum Schutz vor sichtbarer Unschärfe auf 115 Prozent beziehungsweise 1280 Pixel begrenzt. Im Banner-Modus werden weder Medienlogo noch Texttitel eingeblendet. Medienart und Bewertung sitzen bei beiden Bildtypen weiter unten.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.1.0.0/PunisherBanna_2.1.0.0.zip",
+        "checksum": "143cad050bdbaef51b3d2dca56a946ce",
+        "timestamp": "2026-09-10 07:18:54"
+      },
+      {
         "version": "2.0.2.0",
         "changelog": "Behebt den Fehler 'carousel.configure is not a function' durch eine kollisionsfreie Slider-Registrierung, direkte Instanziierung und versionsgebundenes Laden des Webclient-Skripts.",
         "targetAbi": "12.0.0.0",
