@@ -1,49 +1,49 @@
 # PunisherBanna
 
-PunisherBanna ergänzt die Jellyfin-Startseite um einen konfigurierbaren Banner-Slider mit zufälligen Filmen oder Serien.
+PunisherBanna adds a customizable banner carousel with random movies or TV shows to the Jellyfin home screen.
 
-## Funktionen
+## Features
 
-- Auswahl genau einer Bibliothek
-- 1 bis 20 zufällige Filme oder Serien
-- Bildquelle wahlweise `backdrop.jpg` oder `banner.jpg`
-- Medienlogo oder Titel als Text
-- optional sichtbare Community-Bewertung
-- Größenprofile Klein, Standard und Groß
-- einstellbare vertikale Bildposition
-- optionales automatisches Wechseln
-- optionale Navigationspfeile und Navigationspunkte
-- Wischen auf Mobilgeräten, Ziehen mit der Maus und Tastaturnavigation
-- Klick auf einen Banner öffnet die Jellyfin-Detailseite
+- Select a single media library
+- Display between 1 and 20 random movies or TV shows
+- Use either `backdrop.jpg` or `banner.jpg` artwork
+- Show the media logo or title text
+- Optionally display the community rating
+- Small, standard, and large size presets
+- Adjustable vertical image position
+- Optional automatic slide rotation
+- Optional navigation arrows and pagination dots
+- Swipe on mobile devices, drag with a mouse, or use keyboard navigation
+- Open the Jellyfin item details page by selecting a banner
 
-## Voraussetzungen
+## Requirements
 
 - Jellyfin Server 12.0.x
 - [File Transformation 3.0.0.0](https://github.com/IAmParadox27/jellyfin-plugin-file-transformation/releases/tag/3.0.0.0)
 
 ## Installation
 
-Diese Repository-URL unter **Dashboard → Plugins → Repositories** hinzufügen:
+Add the following repository URL under **Dashboard → Plugins → Repositories**:
 
 ```text
 https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/manifest.json
 ```
 
-Danach PunisherBanna installieren, eine Bibliothek auswählen und Jellyfin vollständig neu starten.
+Install PunisherBanna, select a library in the plugin settings, and then restart Jellyfin completely.
 
-## Entwicklung
+## Development
 
-Benötigt wird das .NET-10-SDK.
+The .NET 10 SDK is required.
 
 ```powershell
 dotnet test .\PunisherBanna.slnx --configuration Release
 .\build.ps1
 ```
 
-## Lizenz
+## License
 
-PunisherBanna steht unter der MIT-Lizenz. Copyright © 2026 PunisherSama.
+PunisherBanna is licensed under the MIT License. Copyright © 2026 PunisherSama.
 
 ## Clients
 
-Die Erweiterung läuft im Jellyfin-Webclient und in Anwendungen, die diesen Webclient einbetten. Rein native Oberflächen werden nicht verändert.
+The plugin works in the Jellyfin web client and in applications that embed the web client. Fully native client interfaces are not modified.
