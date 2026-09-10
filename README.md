@@ -4,19 +4,11 @@ PunisherBanna adds a customizable banner carousel with random movies or TV shows
 
 ## Features
 
-- Select a single media library
-- Display between 1 and 20 random movies or TV shows
-- Use `backdrop.jpg` artwork
-- Optionally show the complete, uncropped backdrop in its original aspect ratio on desktop
-- Keep the established cropped, banner-filling backdrop presentation as the default
-- Show the media logo or title text
-- Optionally display the community rating
-- Small, standard, and large size presets
-- Adjustable vertical image position
-- Optional automatic slide rotation
-- Optional navigation arrows and pagination dots
-- Swipe on mobile devices, drag with a mouse, or use keyboard navigation
-- Open the Jellyfin item details page by selecting a banner
+- Show random movies or TV shows from a selected library
+- Customize the number, size, artwork display, and automatic rotation of banners
+- Optionally show ratings and navigation controls
+- Navigate by touch, mouse, or keyboard
+- Open the Jellyfin details page directly from a banner
 
 ## Requirements
 
