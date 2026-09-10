@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.2.0.0",
+        "changelog": "Desktop-Backdrops werden nun vollständig und ohne Beschneidung im tatsächlichen Bildseitenverhältnis angezeigt. Die Größenprofile begrenzen die Breite auf 1024, 1280 beziehungsweise 1536 Pixel; die bewährte Mobilansicht und Bannerbilder bleiben unverändert.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.2.0.0/PunisherBanna_2.2.0.0.zip",
+        "checksum": "595c965d0fedd4fcff7cbdf5cb1a52af",
+        "timestamp": "2026-09-10 07:24:35"
+      },
+      {
         "version": "2.1.0.0",
         "changelog": "Bannerbilder werden leicht vergrößert, aber zum Schutz vor sichtbarer Unschärfe auf 115 Prozent beziehungsweise 1280 Pixel begrenzt. Im Banner-Modus werden weder Medienlogo noch Texttitel eingeblendet. Medienart und Bewertung sitzen bei beiden Bildtypen weiter unten.",
         "targetAbi": "12.0.0.0",

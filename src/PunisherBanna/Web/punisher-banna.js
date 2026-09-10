@@ -40,7 +40,7 @@
             touch-action: pan-y;
         }
         :host([artwork="banner"]) .stage {
-            aspect-ratio: var(--banner-ratio, 1000 / 185);
+            aspect-ratio: var(--artwork-ratio, 1000 / 185);
             height: auto;
         }
         .stage.dragging { cursor: grabbing; }
@@ -163,6 +163,16 @@
             width: .45rem;
         }
         .page.current { background: #fff; width: 1.4rem; }
+        @media (min-width: 601px) {
+            :host([artwork="backdrop"]) { max-width: 80rem; }
+            :host([artwork="backdrop"][size="small"]) { max-width: 64rem; }
+            :host([artwork="backdrop"][size="large"]) { max-width: 96rem; }
+            :host([artwork="backdrop"]) .stage {
+                aspect-ratio: var(--artwork-ratio, 16 / 9);
+                height: auto;
+            }
+            :host([artwork="backdrop"]) .artwork { object-fit: contain; }
+        }
         @media (max-width: 600px) {
             .stage { height: var(--mobile-height); }
             .caption { bottom: 2.1rem; left: 1.35rem; max-width: 75%; }
@@ -215,8 +225,8 @@
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
             const bannerMode = payload.slides[0]?.artwork === "Banner";
             this.setAttribute("artwork", bannerMode ? "banner" : "backdrop");
-            this.style.maxWidth = bannerMode ? "1150px" : "100%";
-            this.stage.style.setProperty("--banner-ratio", "1000 / 185");
+            this.style.maxWidth = bannerMode ? "1150px" : "";
+            this.stage.style.setProperty("--artwork-ratio", bannerMode ? "1000 / 185" : "16 / 9");
             const anchors = { top: "center top", center: "center center", bottom: "center bottom" };
             this.stage.style.setProperty("--image-anchor", anchors[payload.anchor] || anchors.center);
             this.renderCards();
@@ -271,15 +281,13 @@
             artwork.alt = "";
             artwork.draggable = false;
             artwork.loading = index === 0 ? "eager" : "lazy";
-            if (isBanner) {
-                artwork.addEventListener("load", () => {
-                    card.dataset.artworkWidth = String(artwork.naturalWidth);
-                    card.dataset.artworkHeight = String(artwork.naturalHeight);
-                    if (card.classList.contains("current")) {
-                        this.applyBannerGeometry(card);
-                    }
-                }, { once: true });
-            }
+            artwork.addEventListener("load", () => {
+                card.dataset.artworkWidth = String(artwork.naturalWidth);
+                card.dataset.artworkHeight = String(artwork.naturalHeight);
+                if (card.classList.contains("current")) {
+                    this.applyArtworkGeometry(card);
+                }
+            }, { once: true });
             artwork.src = this.imageUrl(slide.id, slide.artwork, isBanner ? null : 1920);
             card.appendChild(artwork);
 
@@ -463,18 +471,20 @@
                 page.classList.toggle("current", current);
                 page.setAttribute("aria-current", current ? "true" : "false");
             });
-            this.applyBannerGeometry(this.stage.querySelectorAll(".card")[this.position]);
+            this.applyArtworkGeometry(this.stage.querySelectorAll(".card")[this.position]);
         }
 
-        applyBannerGeometry(card) {
-            if (this.getAttribute("artwork") !== "banner" || !card) {
+        applyArtworkGeometry(card) {
+            if (!card) {
                 return;
             }
             const width = Number(card.dataset.artworkWidth);
             const height = Number(card.dataset.artworkHeight);
             if (Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0) {
-                this.stage.style.setProperty("--banner-ratio", `${width} / ${height}`);
-                this.style.maxWidth = `${Math.min(Math.round(width * 1.15), 1280)}px`;
+                this.stage.style.setProperty("--artwork-ratio", `${width} / ${height}`);
+                if (this.getAttribute("artwork") === "banner") {
+                    this.style.maxWidth = `${Math.min(Math.round(width * 1.15), 1280)}px`;
+                }
             }
         }
 

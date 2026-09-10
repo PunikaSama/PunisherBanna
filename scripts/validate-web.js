@@ -63,6 +63,8 @@ for (const required of [
     "if (!isBanner)",
     "width * 1.15",
     "artwork.naturalWidth",
+    "applyArtworkGeometry",
+    ":host([artwork=\"backdrop\"]) .artwork { object-fit: contain; }",
     "runtime.timer !== null",
     "window.setInterval(schedule, 2000)",
     "schedule: schedule",
