@@ -12,7 +12,7 @@
             <div class="content-primary">
                 <form id="PunisherBannaSettingsForm">
                     <div class="verticalSection">
-                        <h2 class="sectionTitle">PunisherBanna <small style="font-size:.55em;opacity:.7">1.0.0.0</small></h2>
+                        <h2 class="sectionTitle">PunisherBanna <small id="PluginVersion" style="font-size:.55em;opacity:.7"></small></h2>
                         <p>Zeigt zufällige Filme oder Serien aus einer ausgewählten Bibliothek auf der Startseite.</p>
 
                         <div class="selectContainer">
@@ -191,6 +191,7 @@
                     const label = element("DependencyMessage");
                     try {
                         const state = await requestJson("/PunisherBanna/dependency");
+                        element("PluginVersion").textContent = state.version || "";
                         label.textContent = state.message;
                         label.style.color = state.connected ? "#57d47b" : "#ffb74d";
                     } catch (error) {

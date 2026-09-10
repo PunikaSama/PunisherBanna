@@ -514,7 +514,8 @@
         host: null,
         carousel: null,
         loading: false,
-        timer: null
+        timer: null,
+        healthTimer: null
     };
 
     function jellyfinApi() {
@@ -568,8 +569,13 @@
     }
 
     function schedule() {
-        window.clearTimeout(runtime.timer);
-        runtime.timer = window.setTimeout(reconcile, 140);
+        if (runtime.timer !== null) {
+            return;
+        }
+        runtime.timer = window.setTimeout(() => {
+            runtime.timer = null;
+            void reconcile();
+        }, 140);
     }
 
     document.addEventListener("visibilitychange", () => {
@@ -577,10 +583,13 @@
             runtime.carousel?.stopRotation();
         } else {
             runtime.carousel?.startRotation();
+            schedule();
         }
     });
     window.addEventListener("hashchange", schedule);
     window.addEventListener("popstate", schedule);
+    window.addEventListener("pageshow", schedule);
+    document.addEventListener("viewshow", schedule);
 
     const observer = new MutationObserver(schedule);
     function start() {
@@ -589,9 +598,10 @@
             return;
         }
         observer.observe(document.body, { childList: true, subtree: true });
+        runtime.healthTimer = window.setInterval(schedule, 2000);
         schedule();
     }
 
-    window.__punisherBannaV2 = { observer: observer };
+    window.__punisherBannaV2 = { observer: observer, schedule: schedule };
     start();
 }());

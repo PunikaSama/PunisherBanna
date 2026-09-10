@@ -4,6 +4,9 @@ namespace PunisherBanna.Contracts;
 
 public sealed class DependencyState
 {
+    [JsonPropertyName("version")]
+    public required string Version { get; init; }
+
     [JsonPropertyName("connected")]
     public bool Connected { get; init; }
 

@@ -170,6 +170,7 @@ public sealed class BannerController : ControllerBase
     {
         return Ok(new DependencyState
         {
+            Version = typeof(Plugin).Assembly.GetName().Version?.ToString() ?? "unbekannt",
             Connected = ClientRegistration.Connected,
             Message = ClientRegistration.ConnectionMessage
         });

@@ -40,8 +40,14 @@ for (const required of [
     }
 }
 
-if (html.includes("LibraryLoadStatus") || html.includes("wie bisher")) {
+if (html.includes("LibraryLoadStatus") || html.includes("wie bisher") || html.includes(">1.0.0.0<")) {
     throw new Error("Removed settings text was reintroduced.");
+}
+
+for (const required of ["PluginVersion", "state.version"]) {
+    if (!settingsScript.includes(required) && !html.includes(required)) {
+        throw new Error(`Missing dynamic version behavior: ${required}`);
+    }
 }
 
 for (const required of [
@@ -54,6 +60,9 @@ for (const required of [
     "isBanner ? null : 1920",
     "!isBanner && slide.logo",
     "artwork.naturalWidth",
+    "runtime.timer !== null",
+    "window.setInterval(schedule, 2000)",
+    "schedule: schedule",
     "/PunisherBanna/content",
     "#/details?id="
 ]) {
