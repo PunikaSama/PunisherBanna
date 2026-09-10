@@ -50,6 +50,10 @@ for (const required of [
     "pointerdown",
     "pointermove",
     "touch-action: pan-y",
+    ":host([artwork=\"banner\"])",
+    "isBanner ? null : 1920",
+    "!isBanner && slide.logo",
+    "artwork.naturalWidth",
     "/PunisherBanna/content",
     "#/details?id="
 ]) {

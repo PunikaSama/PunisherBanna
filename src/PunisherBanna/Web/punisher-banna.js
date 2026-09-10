@@ -39,6 +39,10 @@
             position: relative;
             touch-action: pan-y;
         }
+        :host([artwork="banner"]) .stage {
+            aspect-ratio: var(--banner-ratio, 1000 / 185);
+            height: auto;
+        }
         .stage.dragging { cursor: grabbing; }
         .card {
             -webkit-user-drag: none;
@@ -63,12 +67,15 @@
             transition: none;
         }
         .artwork {
-            background-position: var(--image-anchor, center center);
-            background-repeat: no-repeat;
-            background-size: cover;
+            -webkit-user-drag: none;
+            height: 100%;
             inset: 0;
+            object-fit: cover;
+            object-position: var(--image-anchor, center center);
             position: absolute;
+            width: 100%;
         }
+        :host([artwork="banner"]) .artwork { object-fit: contain; object-position: center; }
         .shade {
             background:
                 linear-gradient(90deg, rgba(0, 0, 0, .87), rgba(0, 0, 0, .46) 40%, rgba(0, 0, 0, .03) 74%),
@@ -201,6 +208,10 @@
             this.payload = payload;
             this.position = 0;
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
+            const bannerMode = payload.slides[0]?.artwork === "Banner";
+            this.setAttribute("artwork", bannerMode ? "banner" : "backdrop");
+            this.style.maxWidth = bannerMode ? "1000px" : "100%";
+            this.stage.style.setProperty("--banner-ratio", "1000 / 185");
             const anchors = { top: "center top", center: "center center", bottom: "center bottom" };
             this.stage.style.setProperty("--image-anchor", anchors[payload.anchor] || anchors.center);
             this.renderCards();
@@ -249,9 +260,22 @@
             card.setAttribute("aria-hidden", index === 0 ? "false" : "true");
             card.setAttribute("aria-label", `${slide.title} öffnen`);
 
-            const artwork = document.createElement("div");
+            const isBanner = slide.artwork === "Banner";
+            const artwork = document.createElement("img");
             artwork.className = "artwork";
-            artwork.style.backgroundImage = `url("${this.imageUrl(slide.id, slide.artwork, 1920)}")`;
+            artwork.alt = "";
+            artwork.draggable = false;
+            artwork.loading = index === 0 ? "eager" : "lazy";
+            if (isBanner) {
+                artwork.addEventListener("load", () => {
+                    card.dataset.artworkWidth = String(artwork.naturalWidth);
+                    card.dataset.artworkHeight = String(artwork.naturalHeight);
+                    if (card.classList.contains("current")) {
+                        this.applyBannerGeometry(card);
+                    }
+                }, { once: true });
+            }
+            artwork.src = this.imageUrl(slide.id, slide.artwork, isBanner ? null : 1920);
             card.appendChild(artwork);
 
             const shade = document.createElement("div");
@@ -260,7 +284,7 @@
 
             const caption = document.createElement("div");
             caption.className = "caption";
-            if (slide.logo) {
+            if (!isBanner && slide.logo) {
                 const logo = document.createElement("img");
                 logo.className = "media-logo";
                 logo.src = this.imageUrl(slide.id, "Logo", 700);
@@ -432,6 +456,19 @@
                 page.classList.toggle("current", current);
                 page.setAttribute("aria-current", current ? "true" : "false");
             });
+            this.applyBannerGeometry(this.stage.querySelectorAll(".card")[this.position]);
+        }
+
+        applyBannerGeometry(card) {
+            if (this.getAttribute("artwork") !== "banner" || !card) {
+                return;
+            }
+            const width = Number(card.dataset.artworkWidth);
+            const height = Number(card.dataset.artworkHeight);
+            if (Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0) {
+                this.stage.style.setProperty("--banner-ratio", `${width} / ${height}`);
+                this.style.maxWidth = `${width}px`;
+            }
         }
 
         startRotation() {
@@ -454,7 +491,11 @@
         }
 
         imageUrl(id, imageType, maxWidth) {
-            return this.api.getUrl(`Items/${encodeURIComponent(id)}/Images/${imageType}/0`, {
+            const path = `Items/${encodeURIComponent(id)}/Images/${imageType}/0`;
+            if (!Number.isFinite(maxWidth)) {
+                return this.api.getUrl(path);
+            }
+            return this.api.getUrl(path, {
                 maxWidth: maxWidth,
                 quality: 90
             });

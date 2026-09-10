@@ -105,7 +105,7 @@ public sealed class BannerController : ControllerBase
                     Title = media.Name,
                     MediaKind = media.GetBaseItemKind() == BaseItemKind.Series ? "series" : "movie",
                     Artwork = artwork.ToString(),
-                    Logo = media.HasImage(ImageType.Logo),
+                    Logo = artwork != ImageType.Banner && media.HasImage(ImageType.Logo),
                     Score = media.CommunityRating is float score ? Math.Round(score, 1) : null
                 });
             }
