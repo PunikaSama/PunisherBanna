@@ -23,7 +23,8 @@ public static class IndexHtmlPatch
 
         string baseUrl = Plugin.Current?.ServerConfiguration.GetNetworkConfiguration().BaseUrl?.Trim() ?? string.Empty;
         string prefix = string.IsNullOrEmpty(baseUrl) ? string.Empty : $"/{baseUrl.Trim('/')}";
-        string element = $"<script id=\"{ElementId}\" defer src=\"{prefix}/PunisherBanna/web\"></script>";
+        string version = typeof(IndexHtmlPatch).Assembly.GetName().Version?.ToString() ?? "0";
+        string element = $"<script id=\"{ElementId}\" defer src=\"{prefix}/PunisherBanna/web?v={Uri.EscapeDataString(version)}\"></script>";
         return html.Insert(insertionPoint, element);
     }
 }

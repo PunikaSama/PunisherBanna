@@ -52,6 +52,8 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
+    "punisher-banna-slider-v202",
+    "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
     "pointermove",

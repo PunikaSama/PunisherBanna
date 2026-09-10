@@ -25,7 +25,7 @@ public sealed class IndexHtmlPatchTests
         string transformed = IndexHtmlPatch.Apply(new HtmlDocumentInput { Contents = source });
 
         Assert.Contains("id=\"punisher-banna-client-loader\"", transformed, StringComparison.Ordinal);
-        Assert.Contains("src=\"/PunisherBanna/web\"", transformed, StringComparison.Ordinal);
+        Assert.Contains("src=\"/PunisherBanna/web?v=", transformed, StringComparison.Ordinal);
         Assert.True(
             transformed.IndexOf("punisher-banna-client-loader", StringComparison.Ordinal)
             < transformed.IndexOf("</body>", StringComparison.Ordinal));

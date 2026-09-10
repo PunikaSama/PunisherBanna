@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-carousel";
-    if (window.__punisherBannaV2 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v202";
+    if (window.__punisherBannaV202 || customElements.get(componentName)) {
         return;
     }
 
@@ -556,7 +556,7 @@
             if (!Array.isArray(payload.slides) || payload.slides.length === 0 || !host.isConnected) {
                 return;
             }
-            const carousel = document.createElement(componentName);
+            const carousel = new PunisherBannaCarousel();
             carousel.configure(api, payload);
             host.prepend(carousel);
             runtime.host = host;
@@ -602,6 +602,6 @@
         schedule();
     }
 
-    window.__punisherBannaV2 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV202 = { observer: observer, schedule: schedule };
     start();
 }());
