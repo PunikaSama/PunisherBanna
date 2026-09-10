@@ -6,9 +6,10 @@ using Newtonsoft.Json.Linq;
 
 namespace PunisherBanna.Integration;
 
-public sealed class ClientRegistration : IHostedService
+public sealed class ClientRegistration : BackgroundService
 {
     private static readonly Guid PatchId = Guid.Parse("f509d1cb-12f5-49bd-b314-f337e1bc7222");
+    private static readonly TimeSpan RetryDelay = TimeSpan.FromSeconds(3);
     private const string DependencyAssembly = "Jellyfin.Plugin.FileTransformation";
     private const string DependencyApi = "Jellyfin.Plugin.FileTransformation.PluginInterface";
     private readonly ILogger<ClientRegistration> _logger;
@@ -22,58 +23,47 @@ public sealed class ClientRegistration : IHostedService
 
     public static string ConnectionMessage { get; private set; } = "Verbindung wurde noch nicht geprüft.";
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        try
+        int attempt = 0;
+        while (!stoppingToken.IsCancellationRequested)
         {
-            Type? api = LocateDependencyApi();
-            MethodInfo? register = api?.GetMethod(
-                "RegisterTransformation",
-                BindingFlags.Public | BindingFlags.Static,
-                binder: null,
-                types: [typeof(JObject)],
-                modifiers: null);
-
-            if (register is null)
+            attempt++;
+            if (TryRegister())
             {
-                SetConnection(false, "File Transformation 3.0.0 ist nicht verfügbar.");
-                _logger.LogWarning("PunisherBanna: {Message}", ConnectionMessage);
-                return Task.CompletedTask;
+                _logger.LogInformation("PunisherBanna: Webclient-Erweiterung registriert.");
+                return;
             }
 
-            var registration = JObject.FromObject(new Dictionary<string, object?>
+            if (attempt == 1 || attempt % 10 == 0)
             {
-                ["id"] = PatchId,
-                ["fileNamePattern"] = "index.html",
-                ["callbackAssembly"] = typeof(IndexHtmlPatch).Assembly.FullName,
-                ["callbackClass"] = typeof(IndexHtmlPatch).FullName,
-                ["callbackMethod"] = nameof(IndexHtmlPatch.Apply)
-            });
+                _logger.LogWarning(
+                    "PunisherBanna wartet auf File Transformation: {Message}",
+                    ConnectionMessage);
+            }
 
-            register.Invoke(null, [registration]);
-            SetConnection(true, "File Transformation ist verbunden.");
-            _logger.LogInformation("PunisherBanna: Webclient-Erweiterung registriert.");
+            try
+            {
+                await Task.Delay(RetryDelay, stoppingToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                return;
+            }
         }
-        catch (Exception exception)
-        {
-            SetConnection(false, $"Verbindung fehlgeschlagen: {Unwrap(exception).Message}");
-            _logger.LogError(exception, "PunisherBanna konnte die Webclient-Erweiterung nicht registrieren.");
-        }
-
-        return Task.CompletedTask;
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
         try
         {
-            MethodInfo? remove = LocateDependencyApi()?.GetMethod(
-                "RemoveTransformation",
-                BindingFlags.Public | BindingFlags.Static,
-                binder: null,
-                types: [typeof(Guid)],
-                modifiers: null);
-            remove?.Invoke(null, [PatchId]);
+            if (Connected)
+            {
+                MethodInfo? remove = LocateDependencyApi()?.GetMethod(
+                    "RemoveTransformation",
+                    BindingFlags.Public | BindingFlags.Static);
+                remove?.Invoke(null, [PatchId]);
+            }
         }
         catch (Exception exception)
         {
@@ -84,7 +74,42 @@ public sealed class ClientRegistration : IHostedService
             SetConnection(false, "Webclient-Erweiterung ist nicht registriert.");
         }
 
-        return Task.CompletedTask;
+        await base.StopAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private bool TryRegister()
+    {
+        try
+        {
+            Type? api = LocateDependencyApi();
+            MethodInfo? register = api?.GetMethod(
+                "RegisterTransformation",
+                BindingFlags.Public | BindingFlags.Static);
+
+            if (register is null)
+            {
+                SetConnection(false, "File Transformation 3.0.0 ist noch nicht verfügbar.");
+                return false;
+            }
+
+            var registration = new JObject
+            {
+                ["id"] = PatchId.ToString("D"),
+                ["fileNamePattern"] = "index.html",
+                ["callbackAssembly"] = typeof(IndexHtmlPatch).Assembly.FullName,
+                ["callbackClass"] = typeof(IndexHtmlPatch).FullName,
+                ["callbackMethod"] = nameof(IndexHtmlPatch.Apply)
+            };
+
+            register.Invoke(null, [registration]);
+            SetConnection(true, "File Transformation ist verbunden.");
+            return true;
+        }
+        catch (Exception exception)
+        {
+            SetConnection(false, $"Verbindung fehlgeschlagen: {Unwrap(exception).Message}");
+            return false;
+        }
     }
 
     private static Type? LocateDependencyApi()

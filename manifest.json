@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.0.0.0",
+        "changelog": "Behebt die Startseiten-Einbindung durch eine zuverlässige, wiederholte Registrierung bei File Transformation. Die höhere Versionsnummer verhindert, dass Jellyfin eine alte 1.x-Installation bevorzugt.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.0.0.0/PunisherBanna_2.0.0.0.zip",
+        "checksum": "424c9b34656ccab6d7836c9f9bed9595",
+        "timestamp": "2026-09-10 06:51:21"
+      },
+      {
         "version": "1.0.1.0",
         "changelog": "Bannerbilder werden in ihrer Originalauflösung und ihrem ursprünglichen Seitenverhältnis ohne zusätzliche Medienlogos dargestellt.",
         "targetAbi": "12.0.0.0",

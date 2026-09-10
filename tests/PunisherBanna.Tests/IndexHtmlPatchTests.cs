@@ -1,9 +1,22 @@
 using PunisherBanna.Integration;
+using Newtonsoft.Json.Linq;
 
 namespace PunisherBanna.Tests;
 
 public sealed class IndexHtmlPatchTests
 {
+    [Fact]
+    public void FileTransformationPayload_DeserializesAndAppliesPatch()
+    {
+        const string source = "<html><body></body></html>";
+        var payload = new JObject { ["contents"] = source };
+
+        HtmlDocumentInput? input = payload.ToObject<HtmlDocumentInput>();
+
+        Assert.NotNull(input);
+        Assert.Contains("punisher-banna-client-loader", IndexHtmlPatch.Apply(input), StringComparison.Ordinal);
+    }
+
     [Fact]
     public void Apply_AddsOneLoaderBeforeBodyEnd()
     {

@@ -32,6 +32,8 @@ https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/manifest.json
 
 Install PunisherBanna, select a library in the plugin settings, and then restart Jellyfin completely.
 
+When upgrading from an older PunisherBanna build, install version `2.0.0.0` or newer and select the library again. Jellyfin may otherwise keep loading an older, higher-numbered `1.x` build.
+
 ## License
 
 PunisherBanna is licensed under the MIT License. Copyright © 2026 PunisherSama.
