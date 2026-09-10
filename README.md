@@ -31,15 +31,6 @@ https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/manifest.json
 
 Install PunisherBanna, select a library in the plugin settings, and then restart Jellyfin completely.
 
-## Development
-
-The .NET 10 SDK is required.
-
-```powershell
-dotnet test .\PunisherBanna.slnx --configuration Release
-.\build.ps1
-```
-
 ## License
 
 PunisherBanna is licensed under the MIT License. Copyright © 2026 PunisherSama.
