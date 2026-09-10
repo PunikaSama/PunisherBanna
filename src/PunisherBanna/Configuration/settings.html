@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PunisherBanna</title>
+</head>
+<body>
+    <div id="PunisherBannaSettings"
+         data-role="page"
+         class="page type-interior pluginConfigurationPage"
+         data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="PunisherBannaSettingsForm">
+                    <div class="verticalSection">
+                        <h2 class="sectionTitle">PunisherBanna <small style="font-size:.55em;opacity:.7">1.0.0.0</small></h2>
+                        <p>Zeigt zufällige Filme oder Serien aus einer ausgewählten Bibliothek auf der Startseite.</p>
+
+                        <div class="selectContainer">
+                            <label class="selectLabel" for="SourceLibrary">Bibliothek</label>
+                            <select is="emby-select" id="SourceLibrary" class="emby-select-withcolor" required>
+                                <option value="">Bitte auswählen</option>
+                            </select>
+                        </div>
+
+                        <div class="inputContainer">
+                            <label class="inputLabel inputLabelUnfocused" for="VisibleSlides">Anzahl der Banner</label>
+                            <input is="emby-input" id="VisibleSlides" type="number" min="1" max="20" step="1" required>
+                            <div class="fieldDescription">Zulässig sind 1 bis 20 Banner.</div>
+                        </div>
+
+                        <h3 class="sectionTitle">Darstellung</h3>
+
+                        <div class="selectContainer">
+                            <label class="selectLabel" for="DisplaySize">Bannergröße</label>
+                            <select is="emby-select" id="DisplaySize" class="emby-select-withcolor">
+                                <option value="small">Klein</option>
+                                <option value="standard">Standard</option>
+                                <option value="large">Groß</option>
+                            </select>
+                        </div>
+
+                        <div class="selectContainer">
+                            <label class="selectLabel" for="ArtworkKind">Verwendetes Bannerbild</label>
+                            <select is="emby-select" id="ArtworkKind" class="emby-select-withcolor">
+                                <option value="backdrop">Backdrop (backdrop.jpg)</option>
+                                <option value="banner">Banner (banner.jpg)</option>
+                            </select>
+                            <div class="fieldDescription">Medien ohne den gewählten Bildtyp werden übersprungen.</div>
+                        </div>
+
+                        <div class="selectContainer">
+                            <label class="selectLabel" for="VerticalFocus">Position des Hintergrundbilds</label>
+                            <select is="emby-select" id="VerticalFocus" class="emby-select-withcolor">
+                                <option value="top">Oben</option>
+                                <option value="center">Mittig</option>
+                                <option value="bottom">Unten</option>
+                            </select>
+                        </div>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="ArrowButtons" type="checkbox">
+                            <span>Navigationspfeile anzeigen</span>
+                        </label>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="PageIndicators" type="checkbox">
+                            <span>Navigationspunkte anzeigen</span>
+                        </label>
+
+                        <h3 class="sectionTitle">Inhalt und Wechsel</h3>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="RatingsVisible" type="checkbox">
+                            <span>Community-Bewertung anzeigen</span>
+                        </label>
+
+                        <label class="emby-checkbox-label">
+                            <input is="emby-checkbox" id="AutomaticRotation" type="checkbox">
+                            <span>Banner automatisch wechseln</span>
+                        </label>
+
+                        <div id="RotationSecondsRow" class="inputContainer">
+                            <label class="inputLabel inputLabelUnfocused" for="RotationSeconds">Wechselintervall in Sekunden</label>
+                            <input is="emby-input" id="RotationSeconds" type="number" min="3" max="60" step="1" required>
+                            <div class="fieldDescription">Zulässig sind 3 bis 60 Sekunden.</div>
+                        </div>
+
+                        <div style="margin:1.5em 0;padding:1em;border-radius:.35em;background:rgba(255,255,255,.05)">
+                            <div style="font-weight:600;margin-bottom:.35em">File Transformation</div>
+                            <div id="DependencyMessage" class="fieldDescription">Status wird geladen …</div>
+                        </div>
+
+                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                            <span>Speichern</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            (function () {
+                "use strict";
+
+                const pluginId = "f7ed121e-d2c2-43a2-9d2e-8cb07a217014";
+                const view = document.getElementById("PunisherBannaSettings");
+                const form = document.getElementById("PunisherBannaSettingsForm");
+                let loading = false;
+
+                function element(id) {
+                    return document.getElementById(id);
+                }
+
+                function boundedInteger(value, minimum, maximum, fallback) {
+                    const parsed = Number.parseInt(value, 10);
+                    return Number.isFinite(parsed) ? Math.min(maximum, Math.max(minimum, parsed)) : fallback;
+                }
+
+                function normalizedGuid(value) {
+                    return String(value || "").replace(/[{}-]/g, "").toLowerCase();
+                }
+
+                function updateRotationRow() {
+                    element("RotationSecondsRow").style.display = element("AutomaticRotation").checked ? "block" : "none";
+                }
+
+                function fillLibrarySelect(entries, selected) {
+                    const select = element("SourceLibrary");
+                    select.querySelectorAll("option:not(:first-child)").forEach(function (option) {
+                        option.remove();
+                    });
+
+                    const unique = new Map();
+                    (entries || []).forEach(function (entry) {
+                        const id = entry.id || entry.Id || entry.itemId || entry.ItemId;
+                        const name = entry.name || entry.Name;
+                        if (id && name) {
+                            unique.set(normalizedGuid(id), { id: id, name: name });
+                        }
+                    });
+
+                    Array.from(unique.values())
+                        .sort(function (left, right) { return left.name.localeCompare(right.name); })
+                        .forEach(function (entry) {
+                            const option = document.createElement("option");
+                            option.value = entry.id;
+                            option.textContent = entry.name;
+                            option.selected = normalizedGuid(entry.id) === normalizedGuid(selected);
+                            select.appendChild(option);
+                        });
+                }
+
+                async function requestJson(path, query) {
+                    const response = await ApiClient.fetch({ url: ApiClient.getUrl(path, query), type: "GET" });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    return response.json();
+                }
+
+                async function findLibraries() {
+                    try {
+                        const fromPlugin = await requestJson("/PunisherBanna/libraries");
+                        if (Array.isArray(fromPlugin) && fromPlugin.length > 0) {
+                            return fromPlugin;
+                        }
+                    } catch (error) {
+                        console.debug("PunisherBanna: eigener Bibliotheksendpunkt nicht verfügbar.", error);
+                    }
+
+                    try {
+                        const folders = await ApiClient.getVirtualFolders();
+                        if (Array.isArray(folders) && folders.length > 0) {
+                            return folders;
+                        }
+                    } catch (error) {
+                        console.debug("PunisherBanna: Virtual Folders nicht verfügbar.", error);
+                    }
+
+                    try {
+                        const data = await requestJson("/UserViews", { userId: ApiClient.getCurrentUserId() });
+                        return data.Items || data.items || [];
+                    } catch (error) {
+                        console.warn("PunisherBanna: Bibliotheken konnten nicht geladen werden.", error);
+                        return [];
+                    }
+                }
+
+                async function refreshDependencyState() {
+                    const label = element("DependencyMessage");
+                    try {
+                        const state = await requestJson("/PunisherBanna/dependency");
+                        label.textContent = state.message;
+                        label.style.color = state.connected ? "#57d47b" : "#ffb74d";
+                    } catch (error) {
+                        label.textContent = "Status nicht verfügbar. File Transformation 3.0.0 muss installiert und aktiv sein.";
+                        label.style.color = "#ffb74d";
+                    }
+                }
+
+                async function showSettings() {
+                    if (loading) {
+                        return;
+                    }
+
+                    loading = true;
+                    Dashboard.showLoadingMsg();
+                    try {
+                        const result = await Promise.all([
+                            ApiClient.getPluginConfiguration(pluginId),
+                            findLibraries()
+                        ]);
+                        const settings = result[0];
+                        fillLibrarySelect(result[1], settings.SourceLibrary);
+                        element("VisibleSlides").value = boundedInteger(settings.VisibleSlides, 1, 20, 5);
+                        element("DisplaySize").value = ["small", "standard", "large"].includes(settings.DisplaySize)
+                            ? settings.DisplaySize
+                            : "standard";
+                        element("ArtworkKind").value = settings.ArtworkKind === "banner" ? "banner" : "backdrop";
+                        element("VerticalFocus").value = ["top", "center", "bottom"].includes(settings.VerticalFocus)
+                            ? settings.VerticalFocus
+                            : "center";
+                        element("ArrowButtons").checked = settings.ArrowButtons === true;
+                        element("PageIndicators").checked = settings.PageIndicators !== false;
+                        element("RatingsVisible").checked = settings.RatingsVisible !== false;
+                        element("AutomaticRotation").checked = settings.AutomaticRotation !== false;
+                        element("RotationSeconds").value = boundedInteger(settings.RotationSeconds, 3, 60, 8);
+                        updateRotationRow();
+                        await refreshDependencyState();
+                    } catch (error) {
+                        console.error("PunisherBanna: Einstellungen konnten nicht geladen werden.", error);
+                        Dashboard.alert("Die PunisherBanna-Einstellungen konnten nicht geladen werden.");
+                    } finally {
+                        loading = false;
+                        Dashboard.hideLoadingMsg();
+                    }
+                }
+
+                async function storeSettings(event) {
+                    event.preventDefault();
+                    Dashboard.showLoadingMsg();
+                    try {
+                        const settings = await ApiClient.getPluginConfiguration(pluginId);
+                        settings.SourceLibrary = element("SourceLibrary").value;
+                        settings.VisibleSlides = boundedInteger(element("VisibleSlides").value, 1, 20, 5);
+                        settings.DisplaySize = element("DisplaySize").value;
+                        settings.ArtworkKind = element("ArtworkKind").value;
+                        settings.VerticalFocus = element("VerticalFocus").value;
+                        settings.ArrowButtons = element("ArrowButtons").checked;
+                        settings.PageIndicators = element("PageIndicators").checked;
+                        settings.RatingsVisible = element("RatingsVisible").checked;
+                        settings.AutomaticRotation = element("AutomaticRotation").checked;
+                        settings.RotationSeconds = boundedInteger(element("RotationSeconds").value, 3, 60, 8);
+                        const result = await ApiClient.updatePluginConfiguration(pluginId, settings);
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    } catch (error) {
+                        console.error("PunisherBanna: Einstellungen konnten nicht gespeichert werden.", error);
+                        Dashboard.hideLoadingMsg();
+                        Dashboard.alert("Die PunisherBanna-Einstellungen konnten nicht gespeichert werden.");
+                    }
+                }
+
+                if (!view.dataset.bound) {
+                    view.dataset.bound = "true";
+                    view.addEventListener("pageshow", showSettings);
+                    view.addEventListener("viewshow", showSettings);
+                    form.addEventListener("submit", storeSettings);
+                    element("AutomaticRotation").addEventListener("change", updateRotationRow);
+                    window.setTimeout(showSettings, 0);
+                }
+            }());
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/PunisherBanna/PunisherBanna.csproj" />
+  <Project Path="tests/PunisherBanna.Tests/PunisherBanna.Tests.csproj" />
+</Solution>
