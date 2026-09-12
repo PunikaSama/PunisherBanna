@@ -84,6 +84,58 @@
                             <div class="fieldDescription">Zulässig sind 3 bis 60 Sekunden.</div>
                         </div>
 
+                        <div style="margin:2em 0 1.5em;padding:1.25em;border:1px solid rgba(255,255,255,.14);border-radius:.55em;background:rgba(0,0,0,.2)">
+                            <h3 class="sectionTitle" style="margin-top:0">Video- und Trailer-Hintergrund</h3>
+                            <p class="fieldDescription" style="margin-bottom:1.2em">Das bisherige Bannerbild bleibt immer als Rückfallebene sichtbar. Videos laufen stumm und werden nur für den aktiven Banner geladen.</p>
+                            <div class="selectContainer">
+                                <label class="selectLabel" for="BannerPlaybackMode">Wiedergabemodus</label>
+                                <select is="emby-select" id="BannerPlaybackMode" class="emby-select-withcolor">
+                                    <option value="image">Nur Bild (Standard)</option>
+                                    <option value="local-trailer">Lokalen Trailer verwenden</option>
+                                    <option value="media-preview">Ausschnitt aus Film oder erster Serienepisode</option>
+                                    <option value="automatic">Automatisch: Trailer, Ausschnitt, Bild</option>
+                                </select>
+                            </div>
+                            <div id="BannerVideoOptions">
+                                <label class="emby-checkbox-label">
+                                    <input is="emby-checkbox" id="EnableVideoOnMobile" type="checkbox">
+                                    <span>Video auch auf Mobilgeräten abspielen</span>
+                                </label>
+                                <div class="fieldDescription" style="margin-bottom:1em">Standardmäßig deaktiviert, um Datenverbrauch und Akkulast zu begrenzen.</div>
+                                <div class="inputContainer">
+                                    <label class="inputLabel inputLabelUnfocused" for="VideoStartDelayMilliseconds">Verzögerung vor Videostart in Millisekunden</label>
+                                    <input is="emby-input" id="VideoStartDelayMilliseconds" type="number" min="0" max="5000" step="100">
+                                </div>
+                                <div class="inputContainer">
+                                    <label class="inputLabel inputLabelUnfocused" for="VideoClipDurationSeconds">Maximale Ausschnittlänge in Sekunden</label>
+                                    <input is="emby-input" id="VideoClipDurationSeconds" type="number" min="5" max="30" step="1">
+                                </div>
+                                <div class="inputContainer">
+                                    <label class="inputLabel inputLabelUnfocused" for="VideoStartPercent">Startpunkt des Medienausschnitts in Prozent</label>
+                                    <input is="emby-input" id="VideoStartPercent" type="number" min="0" max="50" step="1">
+                                    <div class="fieldDescription">Gilt nicht für lokale Trailer.</div>
+                                </div>
+                                <div class="selectContainer">
+                                    <label class="selectLabel" for="VideoQualityPreset">Videoqualität</label>
+                                    <select is="emby-select" id="VideoQualityPreset" class="emby-select-withcolor">
+                                        <option value="economy">Sparsam – 360p</option>
+                                        <option value="balanced">Ausgewogen – 540p</option>
+                                        <option value="high">Hoch – 720p</option>
+                                    </select>
+                                </div>
+                                <div class="selectContainer">
+                                    <label class="selectLabel" for="VideoEndBehavior">Nach Ende des Ausschnitts</label>
+                                    <select is="emby-select" id="VideoEndBehavior" class="emby-select-withcolor">
+                                        <option value="image">Zum Bannerbild zurückkehren</option>
+                                        <option value="loop">Ausschnitt wiederholen</option>
+                                    </select>
+                                </div>
+                                <button is="emby-button" id="ResetVideoSettings" type="button" class="raised emby-button">
+                                    <span>Videoeinstellungen zurücksetzen</span>
+                                </button>
+                            </div>
+                        </div>
+
                         <div style="margin:1.5em 0;padding:1em;border-radius:.35em;background:rgba(255,255,255,.05)">
                             <div style="font-weight:600;margin-bottom:.35em">File Transformation</div>
                             <div id="DependencyMessage" class="fieldDescription">Status wird geladen …</div>
@@ -121,6 +173,31 @@
 
                 function updateRotationRow() {
                     element("RotationSecondsRow").style.display = element("AutomaticRotation").checked ? "block" : "none";
+                }
+
+                function normalizePlaybackMode(value) {
+                    return ["local-trailer", "media-preview", "automatic"].includes(value) ? value : "image";
+                }
+
+                function normalizeVideoQuality(value) {
+                    return ["economy", "high"].includes(value) ? value : "balanced";
+                }
+
+                function updateVideoOptions() {
+                    element("BannerVideoOptions").style.display = normalizePlaybackMode(element("BannerPlaybackMode").value) === "image"
+                        ? "none"
+                        : "block";
+                }
+
+                function resetVideoSettings() {
+                    element("BannerPlaybackMode").value = "image";
+                    element("EnableVideoOnMobile").checked = false;
+                    element("VideoStartDelayMilliseconds").value = 800;
+                    element("VideoClipDurationSeconds").value = 12;
+                    element("VideoStartPercent").value = 8;
+                    element("VideoQualityPreset").value = "balanced";
+                    element("VideoEndBehavior").value = "image";
+                    updateVideoOptions();
                 }
 
                 function fillLibrarySelect(entries, selected) {
@@ -226,7 +303,15 @@
                         element("RatingsVisible").checked = settings.RatingsVisible !== false;
                         element("AutomaticRotation").checked = settings.AutomaticRotation !== false;
                         element("RotationSeconds").value = boundedInteger(settings.RotationSeconds, 3, 60, 8);
+                        element("BannerPlaybackMode").value = normalizePlaybackMode(settings.BannerPlaybackMode);
+                        element("EnableVideoOnMobile").checked = settings.EnableVideoOnMobile === true;
+                        element("VideoStartDelayMilliseconds").value = boundedInteger(settings.VideoStartDelayMilliseconds, 0, 5000, 800);
+                        element("VideoClipDurationSeconds").value = boundedInteger(settings.VideoClipDurationSeconds, 5, 30, 12);
+                        element("VideoStartPercent").value = boundedInteger(settings.VideoStartPercent, 0, 50, 8);
+                        element("VideoQualityPreset").value = normalizeVideoQuality(settings.VideoQualityPreset);
+                        element("VideoEndBehavior").value = settings.VideoEndBehavior === "loop" ? "loop" : "image";
                         updateRotationRow();
+                        updateVideoOptions();
                         await refreshDependencyState();
                     } catch (error) {
                         console.error("PunisherBanna: Einstellungen konnten nicht geladen werden.", error);
@@ -252,6 +337,13 @@
                         settings.RatingsVisible = element("RatingsVisible").checked;
                         settings.AutomaticRotation = element("AutomaticRotation").checked;
                         settings.RotationSeconds = boundedInteger(element("RotationSeconds").value, 3, 60, 8);
+                        settings.BannerPlaybackMode = normalizePlaybackMode(element("BannerPlaybackMode").value);
+                        settings.EnableVideoOnMobile = element("EnableVideoOnMobile").checked;
+                        settings.VideoStartDelayMilliseconds = boundedInteger(element("VideoStartDelayMilliseconds").value, 0, 5000, 800);
+                        settings.VideoClipDurationSeconds = boundedInteger(element("VideoClipDurationSeconds").value, 5, 30, 12);
+                        settings.VideoStartPercent = boundedInteger(element("VideoStartPercent").value, 0, 50, 8);
+                        settings.VideoQualityPreset = normalizeVideoQuality(element("VideoQualityPreset").value);
+                        settings.VideoEndBehavior = element("VideoEndBehavior").value === "loop" ? "loop" : "image";
                         const result = await ApiClient.updatePluginConfiguration(pluginId, settings);
                         Dashboard.processPluginConfigurationUpdateResult(result);
                     } catch (error) {
@@ -267,6 +359,8 @@
                     view.addEventListener("viewshow", showSettings);
                     form.addEventListener("submit", storeSettings);
                     element("AutomaticRotation").addEventListener("change", updateRotationRow);
+                    element("BannerPlaybackMode").addEventListener("change", updateVideoOptions);
+                    element("ResetVideoSettings").addEventListener("click", resetVideoSettings);
                     window.setTimeout(showSettings, 0);
                 }
             }());

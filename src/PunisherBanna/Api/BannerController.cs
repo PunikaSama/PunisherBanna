@@ -106,7 +106,8 @@ public sealed class BannerController : ControllerBase
                     MediaKind = media.GetBaseItemKind() == BaseItemKind.Series ? "series" : "movie",
                     Artwork = artwork.ToString(),
                     Logo = media.HasImage(ImageType.Logo),
-                    Score = media.CommunityRating is float score ? Math.Round(score, 1) : null
+                    Score = media.CommunityRating is float score ? Math.Round(score, 1) : null,
+                    RunTimeTicks = media.RunTimeTicks
                 });
             }
 
@@ -205,6 +206,13 @@ public sealed class BannerController : ControllerBase
             Anchor = settings.VerticalFocus,
             Arrows = settings.ArrowButtons,
             Dots = settings.PageIndicators,
+            BannerPlaybackMode = settings.BannerPlaybackMode,
+            EnableVideoOnMobile = settings.EnableVideoOnMobile,
+            VideoStartDelayMilliseconds = settings.VideoStartDelayMilliseconds,
+            VideoClipDurationMilliseconds = settings.VideoClipDurationSeconds * 1000,
+            VideoStartPercent = settings.VideoStartPercent,
+            VideoQualityPreset = settings.VideoQualityPreset,
+            VideoEndBehavior = settings.VideoEndBehavior,
             Notice = notice
         };
     }

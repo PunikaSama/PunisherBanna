@@ -31,6 +31,27 @@ public sealed class CarouselPayload
     [JsonPropertyName("dots")]
     public bool Dots { get; init; }
 
+    [JsonPropertyName("bannerPlaybackMode")]
+    public required string BannerPlaybackMode { get; init; }
+
+    [JsonPropertyName("enableVideoOnMobile")]
+    public bool EnableVideoOnMobile { get; init; }
+
+    [JsonPropertyName("videoStartDelayMs")]
+    public int VideoStartDelayMilliseconds { get; init; }
+
+    [JsonPropertyName("videoClipDurationMs")]
+    public int VideoClipDurationMilliseconds { get; init; }
+
+    [JsonPropertyName("videoStartPercent")]
+    public int VideoStartPercent { get; init; }
+
+    [JsonPropertyName("videoQualityPreset")]
+    public required string VideoQualityPreset { get; init; }
+
+    [JsonPropertyName("videoEndBehavior")]
+    public required string VideoEndBehavior { get; init; }
+
     [JsonPropertyName("notice")]
     public string? Notice { get; init; }
 }

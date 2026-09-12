@@ -7,8 +7,13 @@ PunisherBanna adds a customizable banner carousel with random movies or TV shows
 - Show random movies or TV shows from a selected library
 - Customize the number, size, artwork display, and automatic rotation of banners
 - Optionally show ratings and navigation controls
+- Optionally replace the active banner image with a muted local trailer or a short server-hosted movie/episode preview
+- Automatically prefer a local trailer, then a media preview, and always retain the original image as a fallback
+- Configure the video delay, clip length, start position, quality, end behavior, and optional mobile playback
 - Navigate by touch, mouse, or keyboard
 - Open the Jellyfin details page directly from a banner
+
+Banner videos use only media available through the user's own Jellyfin server. External trailer services are not embedded. Reduced-motion mode, data-saving mode, leaving the banner, and starting Jellyfin's regular player stop preview playback and keep the normal banner image visible.
 
 ## Requirements
 

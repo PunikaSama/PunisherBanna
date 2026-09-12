@@ -31,6 +31,14 @@ for (const required of [
     "RatingsVisible",
     "AutomaticRotation",
     "RotationSeconds",
+    "BannerPlaybackMode",
+    "EnableVideoOnMobile",
+    "VideoStartDelayMilliseconds",
+    "VideoClipDurationSeconds",
+    "VideoStartPercent",
+    "VideoQualityPreset",
+    "VideoEndBehavior",
+    "resetVideoSettings",
     "/PunisherBanna/libraries",
     "ApiClient.getVirtualFolders()",
     "/UserViews"
@@ -52,7 +60,7 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v230",
+    "punisher-banna-slider-v240",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
@@ -74,6 +82,31 @@ for (const required of [
     }
 }
 
-if (client.includes("isBanner") || client.includes("artwork=\"banner\"") || client.includes("__punisherBannaV202")) {
+for (const required of [
+    "/LocalTrailers",
+    "media-preview",
+    "automatic",
+    "stream.mp4",
+    "StartTimeTicks",
+    "defaultMuted = true",
+    "muted = true",
+    "playsInline = true",
+    "prefers-reduced-motion",
+    "navigator.connection?.saveData",
+    "IntersectionObserver",
+    "videoPlayerContainer-onTop",
+    "stopVideo(true)",
+    "removeAttribute(\"src\")"
+]) {
+    if (!client.includes(required)) {
+        throw new Error(`Missing safe banner-video behavior: ${required}`);
+    }
+}
+
+if (!html.includes('value="image">Nur Bild (Standard)') || client.includes("youtube.com") || client.includes("youtu.be")) {
+    throw new Error("Image mode must remain the default and external trailer services are not supported.");
+}
+
+if (client.includes("isBanner") || client.includes("artwork=\"banner\"") || client.includes("__punisherBannaV202") || client.includes("__punisherBannaV230")) {
     throw new Error("Removed banner.jpg behavior was reintroduced.");
 }

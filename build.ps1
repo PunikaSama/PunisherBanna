@@ -16,13 +16,17 @@ $packageFile = Join-Path $artifactRoot "PunisherBanna_$version.zip"
 $output = Join-Path $root "src\PunisherBanna\bin\$Configuration\net10.0"
 
 if (-not $SkipTests) {
-    dotnet test $solution --configuration $Configuration
+    node (Join-Path $root "scripts\validate-web.js")
+    if ($LASTEXITCODE -ne 0) {
+        throw "Web validation failed."
+    }
+    dotnet test $solution --configuration $Configuration --disable-build-servers -m:1
     if ($LASTEXITCODE -ne 0) {
         throw "Tests failed."
     }
 }
 
-dotnet build $project --configuration $Configuration --no-restore
+dotnet build $project --configuration $Configuration --no-restore --disable-build-servers -m:1
 if ($LASTEXITCODE -ne 0) {
     throw "Build failed."
 }

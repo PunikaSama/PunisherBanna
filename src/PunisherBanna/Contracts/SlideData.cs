@@ -21,4 +21,7 @@ public sealed class SlideData
 
     [JsonPropertyName("score")]
     public double? Score { get; init; }
+
+    [JsonPropertyName("runTimeTicks")]
+    public long? RunTimeTicks { get; init; }
 }

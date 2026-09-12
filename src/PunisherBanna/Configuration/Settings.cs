@@ -24,6 +24,20 @@ public sealed class Settings : BasePluginConfiguration
 
     public bool PageIndicators { get; set; } = true;
 
+    public string BannerPlaybackMode { get; set; } = "image";
+
+    public bool EnableVideoOnMobile { get; set; }
+
+    public int VideoStartDelayMilliseconds { get; set; } = 800;
+
+    public int VideoClipDurationSeconds { get; set; } = 12;
+
+    public int VideoStartPercent { get; set; } = 8;
+
+    public string VideoQualityPreset { get; set; } = "balanced";
+
+    public string VideoEndBehavior { get; set; } = "image";
+
     public void Sanitize()
     {
         SourceLibrary = Guid.TryParse(SourceLibrary, out Guid libraryId)
@@ -43,5 +57,24 @@ public sealed class Settings : BasePluginConfiguration
             "bottom" => "bottom",
             _ => "center"
         };
+        BannerPlaybackMode = BannerPlaybackMode?.Trim().ToLowerInvariant() switch
+        {
+            "local-trailer" => "local-trailer",
+            "media-preview" => "media-preview",
+            "automatic" => "automatic",
+            _ => "image"
+        };
+        VideoStartDelayMilliseconds = Math.Clamp(VideoStartDelayMilliseconds, 0, 5000);
+        VideoClipDurationSeconds = Math.Clamp(VideoClipDurationSeconds, 5, 30);
+        VideoStartPercent = Math.Clamp(VideoStartPercent, 0, 50);
+        VideoQualityPreset = VideoQualityPreset?.Trim().ToLowerInvariant() switch
+        {
+            "economy" => "economy",
+            "high" => "high",
+            _ => "balanced"
+        };
+        VideoEndBehavior = string.Equals(VideoEndBehavior?.Trim(), "loop", StringComparison.OrdinalIgnoreCase)
+            ? "loop"
+            : "image";
     }
 }
