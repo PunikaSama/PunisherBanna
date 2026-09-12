@@ -102,6 +102,11 @@
                                     <span>Video auch auf Mobilgeräten abspielen</span>
                                 </label>
                                 <div class="fieldDescription" style="margin-bottom:1em">Standardmäßig deaktiviert, um Datenverbrauch und Akkulast zu begrenzen.</div>
+                                <label class="emby-checkbox-label">
+                                    <input is="emby-checkbox" id="BannerAudioEnabled" type="checkbox">
+                                    <span>Ton-Schaltfläche für Bannervideos erlauben</span>
+                                </label>
+                                <div class="fieldDescription" style="margin-bottom:1em">Videos starten aus Browser-Sicherheitsgründen stumm. Jeder Benutzer kann den Ton am Banner einschalten; seine Auswahl wird lokal gespeichert.</div>
                                 <div class="inputContainer">
                                     <label class="inputLabel inputLabelUnfocused" for="VideoStartDelayMilliseconds">Verzögerung vor Videostart in Millisekunden</label>
                                     <input is="emby-input" id="VideoStartDelayMilliseconds" type="number" min="0" max="5000" step="100">
@@ -192,6 +197,7 @@
                 function resetVideoSettings() {
                     element("BannerPlaybackMode").value = "image";
                     element("EnableVideoOnMobile").checked = false;
+                    element("BannerAudioEnabled").checked = false;
                     element("VideoStartDelayMilliseconds").value = 800;
                     element("VideoClipDurationSeconds").value = 12;
                     element("VideoStartPercent").value = 8;
@@ -305,6 +311,7 @@
                         element("RotationSeconds").value = boundedInteger(settings.RotationSeconds, 3, 60, 8);
                         element("BannerPlaybackMode").value = normalizePlaybackMode(settings.BannerPlaybackMode);
                         element("EnableVideoOnMobile").checked = settings.EnableVideoOnMobile === true;
+                        element("BannerAudioEnabled").checked = settings.BannerAudioEnabled === true;
                         element("VideoStartDelayMilliseconds").value = boundedInteger(settings.VideoStartDelayMilliseconds, 0, 5000, 800);
                         element("VideoClipDurationSeconds").value = boundedInteger(settings.VideoClipDurationSeconds, 5, 30, 12);
                         element("VideoStartPercent").value = boundedInteger(settings.VideoStartPercent, 0, 50, 8);
@@ -339,6 +346,7 @@
                         settings.RotationSeconds = boundedInteger(element("RotationSeconds").value, 3, 60, 8);
                         settings.BannerPlaybackMode = normalizePlaybackMode(element("BannerPlaybackMode").value);
                         settings.EnableVideoOnMobile = element("EnableVideoOnMobile").checked;
+                        settings.BannerAudioEnabled = element("BannerAudioEnabled").checked;
                         settings.VideoStartDelayMilliseconds = boundedInteger(element("VideoStartDelayMilliseconds").value, 0, 5000, 800);
                         settings.VideoClipDurationSeconds = boundedInteger(element("VideoClipDurationSeconds").value, 5, 30, 12);
                         settings.VideoStartPercent = boundedInteger(element("VideoStartPercent").value, 0, 50, 8);

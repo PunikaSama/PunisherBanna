@@ -10,6 +10,7 @@ PunisherBanna adds a customizable banner carousel with random movies or TV shows
 - Optionally replace the active banner image with a muted local trailer or a short server-hosted movie/episode preview
 - Automatically prefer a local trailer, then a media preview, and always retain the original image as a fallback
 - Configure the video delay, clip length, start position, quality, end behavior, and optional mobile playback
+- Optionally allow a per-user mute button whose state is retained across refreshes for that Jellyfin server and user
 - Navigate by touch, mouse, or keyboard
 - Open the Jellyfin details page directly from a banner
 

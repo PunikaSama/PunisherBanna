@@ -34,6 +34,7 @@ public sealed class SettingsTests
         Assert.True(settings.PageIndicators);
         Assert.Equal("image", settings.BannerPlaybackMode);
         Assert.False(settings.EnableVideoOnMobile);
+        Assert.False(settings.BannerAudioEnabled);
         Assert.Equal(5000, settings.VideoStartDelayMilliseconds);
         Assert.Equal(5, settings.VideoClipDurationSeconds);
         Assert.Equal(50, settings.VideoStartPercent);
@@ -73,6 +74,7 @@ public sealed class SettingsTests
         var settings = new Settings
         {
             BannerPlaybackMode = mode,
+            BannerAudioEnabled = true,
             VideoQualityPreset = quality,
             VideoEndBehavior = endBehavior
         };
@@ -80,6 +82,7 @@ public sealed class SettingsTests
         settings.Sanitize();
 
         Assert.Equal(mode.Trim().ToLowerInvariant(), settings.BannerPlaybackMode);
+        Assert.True(settings.BannerAudioEnabled);
         Assert.Equal(quality.Trim().ToLowerInvariant(), settings.VideoQualityPreset);
         Assert.Equal(endBehavior.Trim().ToLowerInvariant(), settings.VideoEndBehavior);
     }

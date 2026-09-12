@@ -37,6 +37,9 @@ public sealed class CarouselPayload
     [JsonPropertyName("enableVideoOnMobile")]
     public bool EnableVideoOnMobile { get; init; }
 
+    [JsonPropertyName("audioEnabled")]
+    public bool AudioEnabled { get; init; }
+
     [JsonPropertyName("videoStartDelayMs")]
     public int VideoStartDelayMilliseconds { get; init; }
 

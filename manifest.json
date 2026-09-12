@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.5.0.0",
+        "changelog": "Adds an optional banner-audio control. Administrators can enable a mute/unmute button for active banner videos, while each Jellyfin user's choice is stored separately per server and retained across refreshes. Videos remain muted by default and always stay muted when the administrator option is disabled.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.5.0.0/PunisherBanna_2.5.0.0.zip",
+        "checksum": "ed2bafbbe80b54e1f38b6f306529c80f",
+        "timestamp": "2026-09-12 16:08:17"
+      },
+      {
         "version": "2.4.0.0",
         "changelog": "Adds optional muted banner video backgrounds from local trailers or short server-hosted movie and episode previews. Image mode remains the unchanged default, with automatic image fallback, mobile and quality controls, configurable delay, clip length, start position and end behavior, plus safeguards for reduced motion, data saving and regular Jellyfin playback.",
         "targetAbi": "12.0.0.0",

@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v240";
-    if (window.__punisherBannaV240 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v250";
+    if (window.__punisherBannaV250 || customElements.get(componentName)) {
         return;
     }
 
@@ -176,6 +176,30 @@
             width: .45rem;
         }
         .page.current { background: #fff; width: 1.4rem; }
+        .audio-toggle {
+            align-items: center;
+            background: rgba(0, 0, 0, .58);
+            border: 1px solid rgba(255, 255, 255, .72);
+            border-radius: 50%;
+            bottom: .75rem;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            font-size: 1.25rem;
+            height: 2.75rem;
+            justify-content: center;
+            padding: 0;
+            position: absolute;
+            right: .75rem;
+            transition: background 160ms ease, transform 160ms ease;
+            width: 2.75rem;
+            z-index: 4;
+        }
+        .audio-toggle:hover, .audio-toggle:focus-visible {
+            background: rgba(0, 0, 0, .84);
+            transform: scale(1.06);
+        }
+        .audio-toggle[hidden] { display: none; }
         @media (min-width: 601px) {
             :host([fit="full"]) { max-width: 80rem; }
             :host([fit="full"][size="small"]) { max-width: 64rem; }
@@ -223,6 +247,7 @@
             this.videoSourceCache = new Map();
             this.visibilityObserver = null;
             this.bannerVisible = true;
+            this.audioButton = null;
 
             const style = document.createElement("style");
             style.textContent = componentCss;
@@ -266,6 +291,7 @@
 
         renderCards() {
             this.stage.replaceChildren();
+            this.audioButton = null;
             this.payload.slides.forEach((slide, index) => {
                 this.stage.appendChild(this.makeCard(slide, index));
             });
@@ -293,6 +319,12 @@
                     pages.appendChild(page);
                 });
                 this.stage.appendChild(pages);
+            }
+
+            if (this.payload.audioEnabled === true && this.playbackMode() !== "image") {
+                this.audioButton = this.makeAudioButton();
+                this.setAudioMuted(this.storedAudioMuted(), false);
+                this.stage.appendChild(this.audioButton);
             }
         }
 
@@ -543,6 +575,9 @@
             this.videoLoading = false;
             const video = this.activeVideo;
             this.activeVideo = null;
+            if (this.audioButton) {
+                this.audioButton.hidden = true;
+            }
             if (allowRetry) {
                 this.videoAttemptKey = null;
             }
@@ -565,6 +600,9 @@
                 return;
             }
             video.classList.remove("visible");
+            if (this.audioButton) {
+                this.audioButton.hidden = true;
+            }
             this.videoLoadTimer = window.setTimeout(() => {
                 if (this.activeVideo === video) {
                     this.activeVideo = null;
@@ -612,6 +650,10 @@
                 window.clearTimeout(this.videoLoadTimer);
                 this.videoLoadTimer = null;
                 video.classList.add("visible");
+                if (this.audioButton && this.payload?.audioEnabled === true) {
+                    this.audioButton.hidden = false;
+                    this.setAudioMuted(this.storedAudioMuted(), false);
+                }
                 this.videoClipTimer = window.setTimeout(
                     () => this.endVideoClip(video, generation),
                     Math.max(5000, Math.min(30000, Number(this.payload?.videoClipDurationMs) || 12000))
@@ -689,6 +731,59 @@
                 }
             }, { threshold: [0, .2] });
             this.visibilityObserver.observe(this);
+        }
+
+        audioPreferenceKey() {
+            const user = this.api?.getCurrentUserId?.() || "anonymous";
+            const serverValue = typeof this.api?.serverId === "function" ? this.api.serverId() : this.api?.serverId;
+            const server = serverValue || window.location.origin;
+            return `punisherBanna:audioMuted:${encodeURIComponent(String(server))}:${encodeURIComponent(String(user))}`;
+        }
+
+        storedAudioMuted() {
+            if (this.payload?.audioEnabled !== true) {
+                return true;
+            }
+            try {
+                return window.localStorage.getItem(this.audioPreferenceKey()) !== "false";
+            } catch (error) {
+                console.debug("PunisherBanna: Ton-Einstellung konnte nicht gelesen werden.", error);
+                return true;
+            }
+        }
+
+        setAudioMuted(muted, persist) {
+            const normalized = muted !== false;
+            if (this.activeVideo) {
+                this.activeVideo.muted = normalized;
+                this.activeVideo.defaultMuted = normalized;
+            }
+            if (this.audioButton) {
+                this.audioButton.textContent = normalized ? "🔇" : "🔊";
+                this.audioButton.setAttribute("aria-label", normalized ? "Bannerton einschalten" : "Bannerton stummschalten");
+                this.audioButton.title = normalized ? "Ton einschalten" : "Stummschalten";
+                this.audioButton.setAttribute("aria-pressed", normalized ? "false" : "true");
+            }
+            if (persist) {
+                try {
+                    window.localStorage.setItem(this.audioPreferenceKey(), normalized ? "true" : "false");
+                } catch (error) {
+                    console.debug("PunisherBanna: Ton-Einstellung konnte nicht gespeichert werden.", error);
+                }
+            }
+        }
+
+        makeAudioButton() {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "audio-toggle";
+            button.hidden = true;
+            button.addEventListener("click", event => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.setAudioMuted(!this.activeVideo || !this.activeVideo.muted, true);
+            });
+            return button;
         }
 
         makeTitle(text) {
@@ -984,6 +1079,6 @@
         schedule();
     }
 
-    window.__punisherBannaV240 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV250 = { observer: observer, schedule: schedule };
     start();
 }());

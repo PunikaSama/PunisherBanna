@@ -28,6 +28,8 @@ public sealed class Settings : BasePluginConfiguration
 
     public bool EnableVideoOnMobile { get; set; }
 
+    public bool BannerAudioEnabled { get; set; }
+
     public int VideoStartDelayMilliseconds { get; set; } = 800;
 
     public int VideoClipDurationSeconds { get; set; } = 12;
