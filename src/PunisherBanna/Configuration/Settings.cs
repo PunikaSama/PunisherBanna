@@ -4,6 +4,8 @@ namespace PunisherBanna.Configuration;
 
 public sealed class Settings : BasePluginConfiguration
 {
+    public string SettingsLanguage { get; set; } = "en";
+
     public string SourceLibrary { get; set; } = string.Empty;
 
     public int VisibleSlides { get; set; } = 5;
@@ -40,6 +42,9 @@ public sealed class Settings : BasePluginConfiguration
 
     public void Sanitize()
     {
+        SettingsLanguage = string.Equals(SettingsLanguage?.Trim(), "de", StringComparison.OrdinalIgnoreCase)
+            ? "de"
+            : "en";
         SourceLibrary = Guid.TryParse(SourceLibrary, out Guid libraryId)
             ? libraryId.ToString("D")
             : string.Empty;

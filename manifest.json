@@ -9,20 +9,20 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.7.3.0",
+        "changelog": "Adds a persistent English/German language selector to the PunisherBanna settings page, with English as the default. All labels, descriptions, option values, live volume text, dependency status messages, and error dialogs switch immediately and the administrator's choice is saved in the plugin configuration.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.7.3.0/PunisherBanna_2.7.3.0.zip",
+        "checksum": "c7630dd5fc43032c06bce0ca823cf864",
+        "timestamp": "2026-09-12 20:49:24"
+      },
+      {
         "version": "2.7.2.0",
         "changelog": "Fixes primary-button navigation at the pointer-event level. Releasing the left mouse button after a normal banner press now opens the owning series or movie directly, without waiting for a browser-generated click that may be suppressed by pointer capture. Genuine drag gestures and all dedicated banner controls remain excluded.",
         "targetAbi": "12.0.0.0",
         "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.7.2.0/PunisherBanna_2.7.2.0.zip",
         "checksum": "cf8d5acb94d7c788c145aeea13b32291",
         "timestamp": "2026-09-12 19:11:56"
-      },
-      {
-        "version": "2.7.1.0",
-        "changelog": "Restores reliable banner navigation while an episode clip or trailer is playing. A normal click anywhere on the active banner now explicitly opens the owning series or movie and safely stops the preview stream first, while carousel arrows, page indicators, drag gestures, and the audio toggle remain independent controls.",
-        "targetAbi": "12.0.0.0",
-        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.7.1.0/PunisherBanna_2.7.1.0.zip",
-        "checksum": "404cd5b22b4d1fb1082fd423df625241",
-        "timestamp": "2026-09-12 19:07:56"
       }
     ]
   }

@@ -68,6 +68,7 @@ public sealed class SettingsTests
     {
         var settings = new Settings
         {
+            SettingsLanguage = "invalid",
             BannerPlaybackMode = mode,
             BannerAudioEnabled = true,
             BannerAudioVolumePercent = 20,
@@ -77,10 +78,25 @@ public sealed class SettingsTests
 
         settings.Sanitize();
 
+        Assert.Equal("en", settings.SettingsLanguage);
         Assert.Equal(mode.Trim().ToLowerInvariant(), settings.BannerPlaybackMode);
         Assert.True(settings.BannerAudioEnabled);
         Assert.Equal(20, settings.BannerAudioVolumePercent);
         Assert.Equal(quality.Trim().ToLowerInvariant(), settings.VideoQualityPreset);
         Assert.Equal(endBehavior.Trim().ToLowerInvariant(), settings.VideoEndBehavior);
+    }
+
+    [Theory]
+    [InlineData("de", "de")]
+    [InlineData(" DE ", "de")]
+    [InlineData("en", "en")]
+    [InlineData("fr", "en")]
+    public void Sanitize_NormalizesSettingsLanguage(string language, string expected)
+    {
+        var settings = new Settings { SettingsLanguage = language };
+
+        settings.Sanitize();
+
+        Assert.Equal(expected, settings.SettingsLanguage);
     }
 }

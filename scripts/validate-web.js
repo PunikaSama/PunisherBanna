@@ -21,6 +21,11 @@ new Function(settingsScript);
 new Function(client);
 
 for (const required of [
+    "SettingsLanguage",
+    "normalizeSettingsLanguage",
+    "translations",
+    "applyLanguage",
+    "settings.SettingsLanguage = currentLanguage()",
     "SourceLibrary",
     "VisibleSlides",
     "DisplaySize",
@@ -117,7 +122,7 @@ for (const required of [
     }
 }
 
-if (!html.includes('value="image">Nur Bild (Standard)') || client.includes("youtube.com") || client.includes("youtu.be")) {
+if (!html.includes('value="image" data-i18n="imageOnly">Image only (default)') || client.includes("youtube.com") || client.includes("youtu.be")) {
     throw new Error("Image mode must remain the default and external trailer services are not supported.");
 }
 
@@ -132,8 +137,22 @@ for (const removed of ["FullBackdrop", "VerticalFocus", "fullBackdrop", "payload
 }
 
 if (settingsScript.includes("${volume}")
-    || !settingsScript.includes('"Lautstärke: " + String(volume) + " %"')) {
+    || !settingsScript.includes('translate("volume").replace("{value}", String(volume))')) {
     throw new Error("The live volume percentage must use Jellyfin-safe string concatenation.");
+}
+
+for (const required of [
+    "data-i18n",
+    "Settings language",
+    "Sprache der Einstellungen",
+    "The PunisherBanna settings could not be loaded.",
+    "Die PunisherBanna-Einstellungen konnten nicht geladen werden.",
+    "File Transformation is connected.",
+    "File Transformation ist verbunden."
+]) {
+    if (!html.includes(required)) {
+        throw new Error(`Missing bilingual settings text: ${required}`);
+    }
 }
 
 if (client.includes("isBanner")

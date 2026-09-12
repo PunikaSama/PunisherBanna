@@ -13,129 +13,138 @@
                 <form id="PunisherBannaSettingsForm">
                     <div class="verticalSection">
                         <h2 class="sectionTitle">PunisherBanna <small id="PluginVersion" style="font-size:.55em;opacity:.7"></small></h2>
-                        <p>Zeigt zufällige Filme oder Serien aus einer ausgewählten Bibliothek auf der Startseite.</p>
+                        <p data-i18n="intro">Shows random movies or series from a selected library on the home screen.</p>
 
                         <div class="selectContainer">
-                            <label class="selectLabel" for="SourceLibrary">Bibliothek</label>
+                            <label class="selectLabel" for="SettingsLanguage" data-i18n="settingsLanguage">Settings language</label>
+                            <select is="emby-select" id="SettingsLanguage" class="emby-select-withcolor">
+                                <option value="en">English</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                            <div class="fieldDescription" data-i18n="languageHelp">Changes all labels on this page immediately and is saved for administrators.</div>
+                        </div>
+
+                        <div class="selectContainer">
+                            <label class="selectLabel" for="SourceLibrary" data-i18n="library">Library</label>
                             <select is="emby-select" id="SourceLibrary" class="emby-select-withcolor" required>
-                                <option value="">Bitte auswählen</option>
+                                <option value="" data-i18n="selectLibrary">Please select</option>
                             </select>
                         </div>
 
                         <div class="inputContainer">
-                            <label class="inputLabel inputLabelUnfocused" for="VisibleSlides">Anzahl der Banner</label>
+                            <label class="inputLabel inputLabelUnfocused" for="VisibleSlides" data-i18n="bannerCount">Number of banners</label>
                             <input is="emby-input" id="VisibleSlides" type="number" min="1" max="20" step="1" required>
-                            <div class="fieldDescription">Zulässig sind 1 bis 20 Banner.</div>
+                            <div class="fieldDescription" data-i18n="bannerCountHelp">Allowed range: 1 to 20 banners.</div>
                         </div>
 
-                        <h3 class="sectionTitle">Darstellung</h3>
+                        <h3 class="sectionTitle" data-i18n="appearance">Appearance</h3>
 
                         <div class="selectContainer">
-                            <label class="selectLabel" for="DisplaySize">Bannergröße</label>
+                            <label class="selectLabel" for="DisplaySize" data-i18n="bannerSize">Banner size</label>
                             <select is="emby-select" id="DisplaySize" class="emby-select-withcolor">
-                                <option value="small">Klein</option>
-                                <option value="standard">Standard</option>
-                                <option value="large">Groß</option>
+                                <option value="small" data-i18n="small">Small</option>
+                                <option value="standard" data-i18n="standard">Standard</option>
+                                <option value="large" data-i18n="large">Large</option>
                             </select>
                         </div>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="ArrowButtons" type="checkbox">
-                            <span>Navigationspfeile anzeigen</span>
+                            <span data-i18n="showArrows">Show navigation arrows</span>
                         </label>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="PageIndicators" type="checkbox">
-                            <span>Navigationspunkte anzeigen</span>
+                            <span data-i18n="showDots">Show navigation dots</span>
                         </label>
 
-                        <h3 class="sectionTitle">Inhalt und Wechsel</h3>
+                        <h3 class="sectionTitle" data-i18n="contentRotation">Content and rotation</h3>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="RatingsVisible" type="checkbox">
-                            <span>Community-Bewertung anzeigen</span>
+                            <span data-i18n="showRating">Show community rating</span>
                         </label>
 
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="AutomaticRotation" type="checkbox">
-                            <span>Banner automatisch wechseln</span>
+                            <span data-i18n="automaticRotation">Rotate banners automatically</span>
                         </label>
 
                         <div id="RotationSecondsRow" class="inputContainer">
-                            <label class="inputLabel inputLabelUnfocused" for="RotationSeconds">Wechselintervall in Sekunden</label>
+                            <label class="inputLabel inputLabelUnfocused" for="RotationSeconds" data-i18n="rotationInterval">Rotation interval in seconds</label>
                             <input is="emby-input" id="RotationSeconds" type="number" min="3" max="60" step="1" required>
-                            <div class="fieldDescription">Zulässig sind 3 bis 60 Sekunden.</div>
+                            <div class="fieldDescription" data-i18n="rotationHelp">Allowed range: 3 to 60 seconds.</div>
                         </div>
 
                         <div style="margin:2em 0 1.5em;padding:1.25em;border:1px solid rgba(255,255,255,.14);border-radius:.55em;background:rgba(0,0,0,.2)">
-                            <h3 class="sectionTitle" style="margin-top:0">Video- und Trailer-Hintergrund</h3>
-                            <p class="fieldDescription" style="margin-bottom:1.2em">Das bisherige Bannerbild bleibt immer als Rückfallebene sichtbar. Videos laufen stumm und werden nur für den aktiven Banner geladen.</p>
+                            <h3 class="sectionTitle" style="margin-top:0" data-i18n="videoBackground">Video and trailer background</h3>
+                            <p class="fieldDescription" style="margin-bottom:1.2em" data-i18n="videoBackgroundHelp">The banner image always remains visible as a fallback. Videos start muted and are loaded only for the active banner.</p>
                             <div class="selectContainer">
-                                <label class="selectLabel" for="BannerPlaybackMode">Wiedergabemodus</label>
+                                <label class="selectLabel" for="BannerPlaybackMode" data-i18n="playbackMode">Playback mode</label>
                                 <select is="emby-select" id="BannerPlaybackMode" class="emby-select-withcolor">
-                                    <option value="image">Nur Bild (Standard)</option>
-                                    <option value="local-trailer">Lokalen Trailer verwenden</option>
-                                    <option value="media-preview">Ausschnitt aus Film oder erster Serienepisode</option>
-                                    <option value="automatic">Automatisch: Trailer, Ausschnitt, Bild</option>
+                                    <option value="image" data-i18n="imageOnly">Image only (default)</option>
+                                    <option value="local-trailer" data-i18n="localTrailer">Use local trailer</option>
+                                    <option value="media-preview" data-i18n="mediaPreview">Clip from movie or first series episode</option>
+                                    <option value="automatic" data-i18n="automaticMode">Automatic: trailer, clip, image</option>
                                 </select>
                             </div>
                             <div id="BannerVideoOptions">
                                 <label class="emby-checkbox-label">
                                     <input is="emby-checkbox" id="EnableVideoOnMobile" type="checkbox">
-                                    <span>Video auch auf Mobilgeräten abspielen</span>
+                                    <span data-i18n="videoOnMobile">Play video on mobile devices</span>
                                 </label>
-                                <div class="fieldDescription" style="margin-bottom:1em">Standardmäßig deaktiviert, um Datenverbrauch und Akkulast zu begrenzen.</div>
+                                <div class="fieldDescription" style="margin-bottom:1em" data-i18n="videoOnMobileHelp">Disabled by default to limit data usage and battery consumption.</div>
                                 <label class="emby-checkbox-label">
                                     <input is="emby-checkbox" id="BannerAudioEnabled" type="checkbox">
-                                    <span>Ton-Schaltfläche für Bannervideos erlauben</span>
+                                    <span data-i18n="allowAudio">Allow an audio button for banner videos</span>
                                 </label>
-                                <div class="fieldDescription" style="margin-bottom:1em">Videos starten aus Browser-Sicherheitsgründen stumm. Jeder Benutzer kann den Ton am Banner einschalten; seine Auswahl wird lokal gespeichert.</div>
+                                <div class="fieldDescription" style="margin-bottom:1em" data-i18n="allowAudioHelp">Videos start muted because of browser restrictions. Each user can enable banner audio; the choice is stored locally.</div>
                                 <div id="BannerAudioVolumeRow" style="margin:1.35em 0 1.85em">
-                                    <label id="BannerAudioVolumeLabel" for="BannerAudioVolumePercent" style="display:block;margin-bottom:.7em">Lautstärke: 20 %</label>
+                                    <label id="BannerAudioVolumeLabel" for="BannerAudioVolumePercent" style="display:block;margin-bottom:.7em">Volume: 20%</label>
                                     <input id="BannerAudioVolumePercent" type="range" min="0" max="100" step="1" value="20" style="display:block;width:100%;margin:0 0 .8em">
-                                    <div class="fieldDescription" style="margin:0">Globale Lautstärke beim Einschalten des Bannertons; Standardwert: 20 %.</div>
+                                    <div class="fieldDescription" style="margin:0" data-i18n="volumeHelp">Global volume when banner audio is enabled; default: 20%.</div>
                                 </div>
                                 <div class="inputContainer">
-                                    <label class="inputLabel inputLabelUnfocused" for="VideoStartDelayMilliseconds">Verzögerung vor Videostart in Millisekunden</label>
+                                    <label class="inputLabel inputLabelUnfocused" for="VideoStartDelayMilliseconds" data-i18n="videoDelay">Delay before video starts in milliseconds</label>
                                     <input is="emby-input" id="VideoStartDelayMilliseconds" type="number" min="0" max="5000" step="100">
                                 </div>
                                 <div class="inputContainer">
-                                    <label class="inputLabel inputLabelUnfocused" for="VideoClipDurationSeconds">Maximale Ausschnittlänge in Sekunden</label>
+                                    <label class="inputLabel inputLabelUnfocused" for="VideoClipDurationSeconds" data-i18n="clipLength">Maximum clip length in seconds</label>
                                     <input is="emby-input" id="VideoClipDurationSeconds" type="number" min="5" max="30" step="1">
                                 </div>
                                 <div class="inputContainer">
-                                    <label class="inputLabel inputLabelUnfocused" for="VideoStartPercent">Startpunkt des Medienausschnitts in Prozent</label>
+                                    <label class="inputLabel inputLabelUnfocused" for="VideoStartPercent" data-i18n="clipStart">Media clip start position in percent</label>
                                     <input is="emby-input" id="VideoStartPercent" type="number" min="0" max="50" step="1">
-                                    <div class="fieldDescription">Gilt nicht für lokale Trailer.</div>
+                                    <div class="fieldDescription" data-i18n="clipStartHelp">Does not apply to local trailers.</div>
                                 </div>
                                 <div class="selectContainer">
-                                    <label class="selectLabel" for="VideoQualityPreset">Videoqualität</label>
+                                    <label class="selectLabel" for="VideoQualityPreset" data-i18n="videoQuality">Video quality</label>
                                     <select is="emby-select" id="VideoQualityPreset" class="emby-select-withcolor">
-                                        <option value="economy">Sparsam – 360p</option>
-                                        <option value="balanced">Ausgewogen – 540p</option>
-                                        <option value="high">Hoch – 720p</option>
+                                        <option value="economy" data-i18n="qualityEconomy">Economy – 360p</option>
+                                        <option value="balanced" data-i18n="qualityBalanced">Balanced – 540p</option>
+                                        <option value="high" data-i18n="qualityHigh">High – 720p</option>
                                     </select>
                                 </div>
                                 <div class="selectContainer">
-                                    <label class="selectLabel" for="VideoEndBehavior">Nach Ende des Ausschnitts</label>
+                                    <label class="selectLabel" for="VideoEndBehavior" data-i18n="afterClip">After the clip ends</label>
                                     <select is="emby-select" id="VideoEndBehavior" class="emby-select-withcolor">
-                                        <option value="image">Zum Bannerbild zurückkehren</option>
-                                        <option value="loop">Ausschnitt wiederholen</option>
+                                        <option value="image" data-i18n="returnImage">Return to banner image</option>
+                                        <option value="loop" data-i18n="loopClip">Repeat clip</option>
                                     </select>
                                 </div>
                                 <button is="emby-button" id="ResetVideoSettings" type="button" class="raised emby-button">
-                                    <span>Videoeinstellungen zurücksetzen</span>
+                                    <span data-i18n="resetVideo">Reset video settings</span>
                                 </button>
                             </div>
                         </div>
 
                         <div style="margin:1.5em 0;padding:1em;border-radius:.35em;background:rgba(255,255,255,.05)">
                             <div style="font-weight:600;margin-bottom:.35em">File Transformation</div>
-                            <div id="DependencyMessage" class="fieldDescription">Status wird geladen …</div>
+                            <div id="DependencyMessage" class="fieldDescription" data-i18n="statusLoading">Loading status…</div>
                         </div>
 
                         <button is="emby-button" type="submit" class="raised button-submit block emby-button">
-                            <span>Speichern</span>
+                            <span data-i18n="save">Save</span>
                         </button>
                     </div>
                 </form>
@@ -150,9 +159,148 @@
                 const view = document.getElementById("PunisherBannaSettings");
                 const form = document.getElementById("PunisherBannaSettingsForm");
                 let loading = false;
+                let dependencyState = null;
+                const translations = {
+                    en: {
+                        intro: "Shows random movies or series from a selected library on the home screen.",
+                        settingsLanguage: "Settings language",
+                        languageHelp: "Changes all labels on this page immediately and is saved for administrators.",
+                        library: "Library",
+                        selectLibrary: "Please select",
+                        bannerCount: "Number of banners",
+                        bannerCountHelp: "Allowed range: 1 to 20 banners.",
+                        appearance: "Appearance",
+                        bannerSize: "Banner size",
+                        small: "Small",
+                        standard: "Standard",
+                        large: "Large",
+                        showArrows: "Show navigation arrows",
+                        showDots: "Show navigation dots",
+                        contentRotation: "Content and rotation",
+                        showRating: "Show community rating",
+                        automaticRotation: "Rotate banners automatically",
+                        rotationInterval: "Rotation interval in seconds",
+                        rotationHelp: "Allowed range: 3 to 60 seconds.",
+                        videoBackground: "Video and trailer background",
+                        videoBackgroundHelp: "The banner image always remains visible as a fallback. Videos start muted and are loaded only for the active banner.",
+                        playbackMode: "Playback mode",
+                        imageOnly: "Image only (default)",
+                        localTrailer: "Use local trailer",
+                        mediaPreview: "Clip from movie or first series episode",
+                        automaticMode: "Automatic: trailer, clip, image",
+                        videoOnMobile: "Play video on mobile devices",
+                        videoOnMobileHelp: "Disabled by default to limit data usage and battery consumption.",
+                        allowAudio: "Allow an audio button for banner videos",
+                        allowAudioHelp: "Videos start muted because of browser restrictions. Each user can enable banner audio; the choice is stored locally.",
+                        volume: "Volume: {value}%",
+                        volumeHelp: "Global volume when banner audio is enabled; default: 20%.",
+                        videoDelay: "Delay before video starts in milliseconds",
+                        clipLength: "Maximum clip length in seconds",
+                        clipStart: "Media clip start position in percent",
+                        clipStartHelp: "Does not apply to local trailers.",
+                        videoQuality: "Video quality",
+                        qualityEconomy: "Economy – 360p",
+                        qualityBalanced: "Balanced – 540p",
+                        qualityHigh: "High – 720p",
+                        afterClip: "After the clip ends",
+                        returnImage: "Return to banner image",
+                        loopClip: "Repeat clip",
+                        resetVideo: "Reset video settings",
+                        statusLoading: "Loading status…",
+                        dependencyConnected: "File Transformation is connected.",
+                        dependencyDisconnected: "File Transformation 3.0.0 is not connected. Verify that it is installed and enabled.",
+                        settingsLoadFailed: "The PunisherBanna settings could not be loaded.",
+                        settingsSaveFailed: "The PunisherBanna settings could not be saved.",
+                        save: "Save"
+                    },
+                    de: {
+                        intro: "Zeigt zufällige Filme oder Serien aus einer ausgewählten Bibliothek auf der Startseite.",
+                        settingsLanguage: "Sprache der Einstellungen",
+                        languageHelp: "Ändert sofort alle Beschriftungen dieser Seite und wird für Administratoren gespeichert.",
+                        library: "Bibliothek",
+                        selectLibrary: "Bitte auswählen",
+                        bannerCount: "Anzahl der Banner",
+                        bannerCountHelp: "Zulässig sind 1 bis 20 Banner.",
+                        appearance: "Darstellung",
+                        bannerSize: "Bannergröße",
+                        small: "Klein",
+                        standard: "Standard",
+                        large: "Groß",
+                        showArrows: "Navigationspfeile anzeigen",
+                        showDots: "Navigationspunkte anzeigen",
+                        contentRotation: "Inhalt und Wechsel",
+                        showRating: "Community-Bewertung anzeigen",
+                        automaticRotation: "Banner automatisch wechseln",
+                        rotationInterval: "Wechselintervall in Sekunden",
+                        rotationHelp: "Zulässig sind 3 bis 60 Sekunden.",
+                        videoBackground: "Video- und Trailer-Hintergrund",
+                        videoBackgroundHelp: "Das Bannerbild bleibt immer als Rückfallebene sichtbar. Videos starten stumm und werden nur für den aktiven Banner geladen.",
+                        playbackMode: "Wiedergabemodus",
+                        imageOnly: "Nur Bild (Standard)",
+                        localTrailer: "Lokalen Trailer verwenden",
+                        mediaPreview: "Ausschnitt aus Film oder erster Serienepisode",
+                        automaticMode: "Automatisch: Trailer, Ausschnitt, Bild",
+                        videoOnMobile: "Video auch auf Mobilgeräten abspielen",
+                        videoOnMobileHelp: "Standardmäßig deaktiviert, um Datenverbrauch und Akkulast zu begrenzen.",
+                        allowAudio: "Ton-Schaltfläche für Bannervideos erlauben",
+                        allowAudioHelp: "Videos starten aus Browser-Sicherheitsgründen stumm. Jeder Benutzer kann den Ton am Banner einschalten; seine Auswahl wird lokal gespeichert.",
+                        volume: "Lautstärke: {value} %",
+                        volumeHelp: "Globale Lautstärke beim Einschalten des Bannertons; Standardwert: 20 %.",
+                        videoDelay: "Verzögerung vor Videostart in Millisekunden",
+                        clipLength: "Maximale Ausschnittlänge in Sekunden",
+                        clipStart: "Startpunkt des Medienausschnitts in Prozent",
+                        clipStartHelp: "Gilt nicht für lokale Trailer.",
+                        videoQuality: "Videoqualität",
+                        qualityEconomy: "Sparsam – 360p",
+                        qualityBalanced: "Ausgewogen – 540p",
+                        qualityHigh: "Hoch – 720p",
+                        afterClip: "Nach Ende des Ausschnitts",
+                        returnImage: "Zum Bannerbild zurückkehren",
+                        loopClip: "Ausschnitt wiederholen",
+                        resetVideo: "Videoeinstellungen zurücksetzen",
+                        statusLoading: "Status wird geladen…",
+                        dependencyConnected: "File Transformation ist verbunden.",
+                        dependencyDisconnected: "File Transformation 3.0.0 ist nicht verbunden. Prüfe, ob es installiert und aktiviert ist.",
+                        settingsLoadFailed: "Die PunisherBanna-Einstellungen konnten nicht geladen werden.",
+                        settingsSaveFailed: "Die PunisherBanna-Einstellungen konnten nicht gespeichert werden.",
+                        save: "Speichern"
+                    }
+                };
 
                 function element(id) {
                     return document.getElementById(id);
+                }
+
+                function normalizeSettingsLanguage(value) {
+                    return String(value || "").trim().toLowerCase() === "de" ? "de" : "en";
+                }
+
+                function currentLanguage() {
+                    return normalizeSettingsLanguage(element("SettingsLanguage").value);
+                }
+
+                function translate(key) {
+                    return translations[currentLanguage()][key] || translations.en[key] || key;
+                }
+
+                function renderDependencyState() {
+                    const label = element("DependencyMessage");
+                    if (!dependencyState) {
+                        label.textContent = translate("statusLoading");
+                        return;
+                    }
+
+                    label.textContent = translate(dependencyState.connected ? "dependencyConnected" : "dependencyDisconnected");
+                    label.style.color = dependencyState.connected ? "#57d47b" : "#ffb74d";
+                }
+
+                function applyLanguage() {
+                    view.setAttribute("lang", currentLanguage());
+                    view.querySelectorAll("[data-i18n]").forEach(function (node) {
+                        node.textContent = translate(node.dataset.i18n);
+                    });
+                    updateAudioVolumeLabel();
+                    renderDependencyState();
                 }
 
                 function boundedInteger(value, minimum, maximum, fallback) {
@@ -186,7 +334,7 @@
                 function updateAudioVolumeLabel() {
                     const volume = boundedInteger(element("BannerAudioVolumePercent").value, 0, 100, 20);
                     element("BannerAudioVolumePercent").value = volume;
-                    element("BannerAudioVolumeLabel").textContent = "Lautstärke: " + String(volume) + " %";
+                    element("BannerAudioVolumeLabel").textContent = translate("volume").replace("{value}", String(volume));
                 }
 
                 function resetVideoSettings() {
@@ -271,11 +419,11 @@
                     try {
                         const state = await requestJson("/PunisherBanna/dependency");
                         element("PluginVersion").textContent = state.version || "";
-                        label.textContent = state.message;
-                        label.style.color = state.connected ? "#57d47b" : "#ffb74d";
+                        dependencyState = { connected: state.connected === true };
+                        renderDependencyState();
                     } catch (error) {
-                        label.textContent = "Status nicht verfügbar. File Transformation 3.0.0 muss installiert und aktiv sein.";
-                        label.style.color = "#ffb74d";
+                        dependencyState = { connected: false };
+                        renderDependencyState();
                     }
                 }
 
@@ -292,6 +440,8 @@
                             findLibraries()
                         ]);
                         const settings = result[0];
+                        element("SettingsLanguage").value = normalizeSettingsLanguage(settings.SettingsLanguage);
+                        applyLanguage();
                         fillLibrarySelect(result[1], settings.SourceLibrary);
                         element("VisibleSlides").value = boundedInteger(settings.VisibleSlides, 1, 20, 5);
                         element("DisplaySize").value = ["small", "standard", "large"].includes(settings.DisplaySize)
@@ -317,7 +467,7 @@
                         await refreshDependencyState();
                     } catch (error) {
                         console.error("PunisherBanna: Einstellungen konnten nicht geladen werden.", error);
-                        Dashboard.alert("Die PunisherBanna-Einstellungen konnten nicht geladen werden.");
+                        Dashboard.alert(translate("settingsLoadFailed"));
                     } finally {
                         loading = false;
                         Dashboard.hideLoadingMsg();
@@ -329,6 +479,7 @@
                     Dashboard.showLoadingMsg();
                     try {
                         const settings = await ApiClient.getPluginConfiguration(pluginId);
+                        settings.SettingsLanguage = currentLanguage();
                         settings.SourceLibrary = element("SourceLibrary").value;
                         settings.VisibleSlides = boundedInteger(element("VisibleSlides").value, 1, 20, 5);
                         settings.DisplaySize = element("DisplaySize").value;
@@ -351,7 +502,7 @@
                     } catch (error) {
                         console.error("PunisherBanna: Einstellungen konnten nicht gespeichert werden.", error);
                         Dashboard.hideLoadingMsg();
-                        Dashboard.alert("Die PunisherBanna-Einstellungen konnten nicht gespeichert werden.");
+                        Dashboard.alert(translate("settingsSaveFailed"));
                     }
                 }
 
@@ -360,6 +511,7 @@
                     view.addEventListener("pageshow", showSettings);
                     view.addEventListener("viewshow", showSettings);
                     form.addEventListener("submit", storeSettings);
+                    element("SettingsLanguage").addEventListener("change", applyLanguage);
                     element("AutomaticRotation").addEventListener("change", updateRotationRow);
                     element("BannerPlaybackMode").addEventListener("change", updateVideoOptions);
                     element("BannerAudioEnabled").addEventListener("change", updateVideoOptions);
