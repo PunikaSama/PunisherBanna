@@ -119,6 +119,11 @@ if (html.includes('is="emby-slider"') || !html.includes('id="BannerAudioVolumeRo
     throw new Error("The audio volume control must use the stable, separately spaced native range layout.");
 }
 
+if (settingsScript.includes("${volume}")
+    || !settingsScript.includes('"Lautstärke: " + String(volume) + " %"')) {
+    throw new Error("The live volume percentage must use Jellyfin-safe string concatenation.");
+}
+
 if (client.includes("isBanner")
     || client.includes("artwork=\"banner\"")
     || client.includes("__punisherBannaV202")

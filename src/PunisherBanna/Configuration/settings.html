@@ -203,7 +203,7 @@
                 function updateAudioVolumeLabel() {
                     const volume = boundedInteger(element("BannerAudioVolumePercent").value, 0, 100, 20);
                     element("BannerAudioVolumePercent").value = volume;
-                    element("BannerAudioVolumeLabel").textContent = `Lautstärke: ${volume} %`;
+                    element("BannerAudioVolumeLabel").textContent = "Lautstärke: " + String(volume) + " %";
                 }
 
                 function resetVideoSettings() {
