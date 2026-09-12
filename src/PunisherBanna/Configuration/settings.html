@@ -7,7 +7,7 @@
     <div id="PunisherBannaSettings"
          data-role="page"
          class="page type-interior pluginConfigurationPage"
-         data-require="emby-input,emby-button,emby-select,emby-checkbox">
+         data-require="emby-input,emby-button,emby-select,emby-checkbox,emby-slider">
         <div data-role="content">
             <div class="content-primary">
                 <form id="PunisherBannaSettingsForm">
@@ -107,6 +107,11 @@
                                     <span>Ton-Schaltfläche für Bannervideos erlauben</span>
                                 </label>
                                 <div class="fieldDescription" style="margin-bottom:1em">Videos starten aus Browser-Sicherheitsgründen stumm. Jeder Benutzer kann den Ton am Banner einschalten; seine Auswahl wird lokal gespeichert.</div>
+                                <div id="BannerAudioVolumeRow" class="inputContainer">
+                                    <label id="BannerAudioVolumeLabel" class="inputLabel inputLabelUnfocused" for="BannerAudioVolumePercent">Lautstärke: 20 %</label>
+                                    <input is="emby-slider" id="BannerAudioVolumePercent" class="emby-slider" type="range" min="0" max="100" step="1" value="20">
+                                    <div class="fieldDescription">Globale Lautstärke beim Einschalten des Bannertons; Standardwert: 20 %.</div>
+                                </div>
                                 <div class="inputContainer">
                                     <label class="inputLabel inputLabelUnfocused" for="VideoStartDelayMilliseconds">Verzögerung vor Videostart in Millisekunden</label>
                                     <input is="emby-input" id="VideoStartDelayMilliseconds" type="number" min="0" max="5000" step="100">
@@ -192,17 +197,26 @@
                     element("BannerVideoOptions").style.display = normalizePlaybackMode(element("BannerPlaybackMode").value) === "image"
                         ? "none"
                         : "block";
+                    element("BannerAudioVolumeRow").style.display = element("BannerAudioEnabled").checked ? "block" : "none";
+                }
+
+                function updateAudioVolumeLabel() {
+                    const volume = boundedInteger(element("BannerAudioVolumePercent").value, 0, 100, 20);
+                    element("BannerAudioVolumePercent").value = volume;
+                    element("BannerAudioVolumeLabel").textContent = `Lautstärke: ${volume} %`;
                 }
 
                 function resetVideoSettings() {
                     element("BannerPlaybackMode").value = "image";
                     element("EnableVideoOnMobile").checked = false;
                     element("BannerAudioEnabled").checked = false;
+                    element("BannerAudioVolumePercent").value = 20;
                     element("VideoStartDelayMilliseconds").value = 800;
                     element("VideoClipDurationSeconds").value = 12;
                     element("VideoStartPercent").value = 8;
                     element("VideoQualityPreset").value = "balanced";
                     element("VideoEndBehavior").value = "image";
+                    updateAudioVolumeLabel();
                     updateVideoOptions();
                 }
 
@@ -312,12 +326,14 @@
                         element("BannerPlaybackMode").value = normalizePlaybackMode(settings.BannerPlaybackMode);
                         element("EnableVideoOnMobile").checked = settings.EnableVideoOnMobile === true;
                         element("BannerAudioEnabled").checked = settings.BannerAudioEnabled === true;
+                        element("BannerAudioVolumePercent").value = boundedInteger(settings.BannerAudioVolumePercent, 0, 100, 20);
                         element("VideoStartDelayMilliseconds").value = boundedInteger(settings.VideoStartDelayMilliseconds, 0, 5000, 800);
                         element("VideoClipDurationSeconds").value = boundedInteger(settings.VideoClipDurationSeconds, 5, 30, 12);
                         element("VideoStartPercent").value = boundedInteger(settings.VideoStartPercent, 0, 50, 8);
                         element("VideoQualityPreset").value = normalizeVideoQuality(settings.VideoQualityPreset);
                         element("VideoEndBehavior").value = settings.VideoEndBehavior === "loop" ? "loop" : "image";
                         updateRotationRow();
+                        updateAudioVolumeLabel();
                         updateVideoOptions();
                         await refreshDependencyState();
                     } catch (error) {
@@ -347,6 +363,7 @@
                         settings.BannerPlaybackMode = normalizePlaybackMode(element("BannerPlaybackMode").value);
                         settings.EnableVideoOnMobile = element("EnableVideoOnMobile").checked;
                         settings.BannerAudioEnabled = element("BannerAudioEnabled").checked;
+                        settings.BannerAudioVolumePercent = boundedInteger(element("BannerAudioVolumePercent").value, 0, 100, 20);
                         settings.VideoStartDelayMilliseconds = boundedInteger(element("VideoStartDelayMilliseconds").value, 0, 5000, 800);
                         settings.VideoClipDurationSeconds = boundedInteger(element("VideoClipDurationSeconds").value, 5, 30, 12);
                         settings.VideoStartPercent = boundedInteger(element("VideoStartPercent").value, 0, 50, 8);
@@ -368,6 +385,8 @@
                     form.addEventListener("submit", storeSettings);
                     element("AutomaticRotation").addEventListener("change", updateRotationRow);
                     element("BannerPlaybackMode").addEventListener("change", updateVideoOptions);
+                    element("BannerAudioEnabled").addEventListener("change", updateVideoOptions);
+                    element("BannerAudioVolumePercent").addEventListener("input", updateAudioVolumeLabel);
                     element("ResetVideoSettings").addEventListener("click", resetVideoSettings);
                     window.setTimeout(showSettings, 0);
                 }

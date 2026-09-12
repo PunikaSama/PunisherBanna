@@ -30,6 +30,8 @@ public sealed class Settings : BasePluginConfiguration
 
     public bool BannerAudioEnabled { get; set; }
 
+    public int BannerAudioVolumePercent { get; set; } = 20;
+
     public int VideoStartDelayMilliseconds { get; set; } = 800;
 
     public int VideoClipDurationSeconds { get; set; } = 12;
@@ -67,6 +69,7 @@ public sealed class Settings : BasePluginConfiguration
             _ => "image"
         };
         VideoStartDelayMilliseconds = Math.Clamp(VideoStartDelayMilliseconds, 0, 5000);
+        BannerAudioVolumePercent = Math.Clamp(BannerAudioVolumePercent, 0, 100);
         VideoClipDurationSeconds = Math.Clamp(VideoClipDurationSeconds, 5, 30);
         VideoStartPercent = Math.Clamp(VideoStartPercent, 0, 50);
         VideoQualityPreset = VideoQualityPreset?.Trim().ToLowerInvariant() switch

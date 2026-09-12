@@ -40,6 +40,9 @@ public sealed class CarouselPayload
     [JsonPropertyName("audioEnabled")]
     public bool AudioEnabled { get; init; }
 
+    [JsonPropertyName("audioVolumePercent")]
+    public int AudioVolumePercent { get; init; }
+
     [JsonPropertyName("videoStartDelayMs")]
     public int VideoStartDelayMilliseconds { get; init; }
 

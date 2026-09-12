@@ -11,6 +11,7 @@ PunisherBanna adds a customizable banner carousel with random movies or TV shows
 - Automatically prefer a local trailer, then a media preview, and always retain the original image as a fallback
 - Configure the video delay, clip length, start position, quality, end behavior, and optional mobile playback
 - Optionally allow a per-user mute button whose state is retained across refreshes for that Jellyfin server and user
+- Set the administrator-controlled banner audio volume from 0 to 100 percent (20 percent by default)
 - Navigate by touch, mouse, or keyboard
 - Open the Jellyfin details page directly from a banner
 

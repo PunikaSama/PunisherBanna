@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.6.0.0",
+        "changelog": "Adds an administrator-controlled banner audio volume slider from 0 to 100 percent, with a 20 percent default and a live percentage label. The configured volume is applied whenever a user enables banner audio, while each user's persisted mute state remains independent.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.6.0.0/PunisherBanna_2.6.0.0.zip",
+        "checksum": "4d306df4189f376dc26ba1fa8a241496",
+        "timestamp": "2026-09-12 16:14:16"
+      },
+      {
         "version": "2.5.0.0",
         "changelog": "Adds an optional banner-audio control. Administrators can enable a mute/unmute button for active banner videos, while each Jellyfin user's choice is stored separately per server and retained across refreshes. Videos remain muted by default and always stay muted when the administrator option is disabled.",
         "targetAbi": "12.0.0.0",

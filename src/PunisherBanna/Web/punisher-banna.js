@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v250";
-    if (window.__punisherBannaV250 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v260";
+    if (window.__punisherBannaV260 || customElements.get(componentName)) {
         return;
     }
 
@@ -634,6 +634,7 @@
             video.controls = false;
             video.defaultMuted = true;
             video.muted = true;
+            video.volume = this.configuredAudioVolume();
             video.playsInline = true;
             video.preload = "metadata";
             video.disablePictureInPicture = true;
@@ -752,9 +753,16 @@
             }
         }
 
+        configuredAudioVolume() {
+            const percent = Number(this.payload?.audioVolumePercent);
+            const normalized = Number.isFinite(percent) ? Math.max(0, Math.min(100, percent)) : 20;
+            return normalized / 100;
+        }
+
         setAudioMuted(muted, persist) {
             const normalized = muted !== false;
             if (this.activeVideo) {
+                this.activeVideo.volume = this.configuredAudioVolume();
                 this.activeVideo.muted = normalized;
                 this.activeVideo.defaultMuted = normalized;
             }
@@ -1079,6 +1087,6 @@
         schedule();
     }
 
-    window.__punisherBannaV250 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV260 = { observer: observer, schedule: schedule };
     start();
 }());

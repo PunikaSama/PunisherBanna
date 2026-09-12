@@ -209,6 +209,7 @@ public sealed class BannerController : ControllerBase
             BannerPlaybackMode = settings.BannerPlaybackMode,
             EnableVideoOnMobile = settings.EnableVideoOnMobile,
             AudioEnabled = settings.BannerAudioEnabled,
+            AudioVolumePercent = settings.BannerAudioVolumePercent,
             VideoStartDelayMilliseconds = settings.VideoStartDelayMilliseconds,
             VideoClipDurationMilliseconds = settings.VideoClipDurationSeconds * 1000,
             VideoStartPercent = settings.VideoStartPercent,

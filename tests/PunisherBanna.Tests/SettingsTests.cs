@@ -15,6 +15,7 @@ public sealed class SettingsTests
             DisplaySize = "wide",
             VerticalFocus = "left",
             BannerPlaybackMode = "invalid",
+            BannerAudioVolumePercent = 999,
             VideoStartDelayMilliseconds = 9000,
             VideoClipDurationSeconds = 1,
             VideoStartPercent = 99,
@@ -35,6 +36,7 @@ public sealed class SettingsTests
         Assert.Equal("image", settings.BannerPlaybackMode);
         Assert.False(settings.EnableVideoOnMobile);
         Assert.False(settings.BannerAudioEnabled);
+        Assert.Equal(100, settings.BannerAudioVolumePercent);
         Assert.Equal(5000, settings.VideoStartDelayMilliseconds);
         Assert.Equal(5, settings.VideoClipDurationSeconds);
         Assert.Equal(50, settings.VideoStartPercent);
@@ -75,6 +77,7 @@ public sealed class SettingsTests
         {
             BannerPlaybackMode = mode,
             BannerAudioEnabled = true,
+            BannerAudioVolumePercent = 20,
             VideoQualityPreset = quality,
             VideoEndBehavior = endBehavior
         };
@@ -83,6 +86,7 @@ public sealed class SettingsTests
 
         Assert.Equal(mode.Trim().ToLowerInvariant(), settings.BannerPlaybackMode);
         Assert.True(settings.BannerAudioEnabled);
+        Assert.Equal(20, settings.BannerAudioVolumePercent);
         Assert.Equal(quality.Trim().ToLowerInvariant(), settings.VideoQualityPreset);
         Assert.Equal(endBehavior.Trim().ToLowerInvariant(), settings.VideoEndBehavior);
     }

@@ -34,6 +34,8 @@ for (const required of [
     "BannerPlaybackMode",
     "EnableVideoOnMobile",
     "BannerAudioEnabled",
+    "BannerAudioVolumePercent",
+    "updateAudioVolumeLabel",
     "VideoStartDelayMilliseconds",
     "VideoClipDurationSeconds",
     "VideoStartPercent",
@@ -61,7 +63,7 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v250",
+    "punisher-banna-slider-v260",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
@@ -99,6 +101,8 @@ for (const required of [
     "stopVideo(true)",
     "removeAttribute(\"src\")",
     "audioEnabled",
+    "audioVolumePercent",
+    "configuredAudioVolume",
     "localStorage",
     "audioPreferenceKey"
 ]) {
@@ -115,6 +119,7 @@ if (client.includes("isBanner")
     || client.includes("artwork=\"banner\"")
     || client.includes("__punisherBannaV202")
     || client.includes("__punisherBannaV230")
-    || client.includes("__punisherBannaV240")) {
+    || client.includes("__punisherBannaV240")
+    || client.includes("__punisherBannaV250")) {
     throw new Error("Removed banner.jpg behavior was reintroduced.");
 }
