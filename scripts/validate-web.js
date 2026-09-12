@@ -24,8 +24,6 @@ for (const required of [
     "SourceLibrary",
     "VisibleSlides",
     "DisplaySize",
-    "FullBackdrop",
-    "VerticalFocus",
     "ArrowButtons",
     "PageIndicators",
     "RatingsVisible",
@@ -63,17 +61,12 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v260",
+    "punisher-banna-slider-v270",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
     "pointermove",
     "touch-action: pan-y",
-    "payload.fullBackdrop === true",
-    "artwork.naturalWidth",
-    "applyArtworkGeometry",
-    "this.getAttribute(\"fit\") !== \"full\"",
-    ":host([fit=\"full\"]) .artwork { object-fit: contain; }",
     "runtime.timer !== null",
     "window.setInterval(schedule, 2000)",
     "schedule: schedule",
@@ -117,6 +110,12 @@ if (!html.includes('value="image">Nur Bild (Standard)') || client.includes("yout
 
 if (html.includes('is="emby-slider"') || !html.includes('id="BannerAudioVolumeRow" style="margin:1.35em 0 1.85em"')) {
     throw new Error("The audio volume control must use the stable, separately spaced native range layout.");
+}
+
+for (const removed of ["FullBackdrop", "VerticalFocus", "fullBackdrop", "payload.anchor", "applyArtworkGeometry"]) {
+    if (html.includes(removed) || settingsScript.includes(removed) || client.includes(removed)) {
+        throw new Error(`Removed backdrop option was reintroduced: ${removed}`);
+    }
 }
 
 if (settingsScript.includes("${volume}")

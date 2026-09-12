@@ -13,7 +13,6 @@ public sealed class SettingsTests
             VisibleSlides = 200,
             RotationSeconds = -1,
             DisplaySize = "wide",
-            VerticalFocus = "left",
             BannerPlaybackMode = "invalid",
             BannerAudioVolumePercent = 999,
             VideoStartDelayMilliseconds = 9000,
@@ -29,8 +28,6 @@ public sealed class SettingsTests
         Assert.Equal(20, settings.VisibleSlides);
         Assert.Equal(3, settings.RotationSeconds);
         Assert.Equal("standard", settings.DisplaySize);
-        Assert.Equal("center", settings.VerticalFocus);
-        Assert.False(settings.FullBackdrop);
         Assert.False(settings.ArrowButtons);
         Assert.True(settings.PageIndicators);
         Assert.Equal("image", settings.BannerPlaybackMode);
@@ -45,26 +42,22 @@ public sealed class SettingsTests
     }
 
     [Theory]
-    [InlineData("small", "top")]
-    [InlineData("standard", "center")]
-    [InlineData(" LARGE ", " BOTTOM ")]
-    public void Sanitize_NormalizesSupportedOptions(string size, string focus)
+    [InlineData("small")]
+    [InlineData("standard")]
+    [InlineData(" LARGE ")]
+    public void Sanitize_NormalizesSupportedOptions(string size)
     {
         Guid library = Guid.NewGuid();
         var settings = new Settings
         {
             SourceLibrary = library.ToString("B"),
-            DisplaySize = size,
-            FullBackdrop = true,
-            VerticalFocus = focus
+            DisplaySize = size
         };
 
         settings.Sanitize();
 
         Assert.Equal(library.ToString("D"), settings.SourceLibrary);
         Assert.Equal(size.Trim().ToLowerInvariant(), settings.DisplaySize);
-        Assert.True(settings.FullBackdrop);
-        Assert.Equal(focus.Trim().ToLowerInvariant(), settings.VerticalFocus);
     }
 
     [Theory]

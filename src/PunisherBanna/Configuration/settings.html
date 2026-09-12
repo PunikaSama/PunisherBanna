@@ -40,23 +40,6 @@
                         </div>
 
                         <label class="emby-checkbox-label">
-                            <input is="emby-checkbox" id="FullBackdrop" type="checkbox">
-                            <span>Backdrop auf Desktop vollständig anzeigen</span>
-                        </label>
-                        <div class="fieldDescription" style="margin-bottom:1em">
-                            Zeigt das vollständige Bild im tatsächlichen Seitenverhältnis. Deaktiviert füllt das Backdrop den Banner und kann dabei beschnitten werden.
-                        </div>
-
-                        <div class="selectContainer">
-                            <label class="selectLabel" for="VerticalFocus">Position des Hintergrundbilds</label>
-                            <select is="emby-select" id="VerticalFocus" class="emby-select-withcolor">
-                                <option value="top">Oben</option>
-                                <option value="center">Mittig</option>
-                                <option value="bottom">Unten</option>
-                            </select>
-                        </div>
-
-                        <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="ArrowButtons" type="checkbox">
                             <span>Navigationspfeile anzeigen</span>
                         </label>
@@ -314,10 +297,6 @@
                         element("DisplaySize").value = ["small", "standard", "large"].includes(settings.DisplaySize)
                             ? settings.DisplaySize
                             : "standard";
-                        element("FullBackdrop").checked = settings.FullBackdrop === true;
-                        element("VerticalFocus").value = ["top", "center", "bottom"].includes(settings.VerticalFocus)
-                            ? settings.VerticalFocus
-                            : "center";
                         element("ArrowButtons").checked = settings.ArrowButtons === true;
                         element("PageIndicators").checked = settings.PageIndicators !== false;
                         element("RatingsVisible").checked = settings.RatingsVisible !== false;
@@ -353,8 +332,6 @@
                         settings.SourceLibrary = element("SourceLibrary").value;
                         settings.VisibleSlides = boundedInteger(element("VisibleSlides").value, 1, 20, 5);
                         settings.DisplaySize = element("DisplaySize").value;
-                        settings.FullBackdrop = element("FullBackdrop").checked;
-                        settings.VerticalFocus = element("VerticalFocus").value;
                         settings.ArrowButtons = element("ArrowButtons").checked;
                         settings.PageIndicators = element("PageIndicators").checked;
                         settings.RatingsVisible = element("RatingsVisible").checked;

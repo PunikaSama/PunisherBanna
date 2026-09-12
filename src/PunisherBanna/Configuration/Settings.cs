@@ -16,10 +16,6 @@ public sealed class Settings : BasePluginConfiguration
 
     public string DisplaySize { get; set; } = "standard";
 
-    public bool FullBackdrop { get; set; }
-
-    public string VerticalFocus { get; set; } = "center";
-
     public bool ArrowButtons { get; set; }
 
     public bool PageIndicators { get; set; } = true;
@@ -54,12 +50,6 @@ public sealed class Settings : BasePluginConfiguration
             "small" => "small",
             "large" => "large",
             _ => "standard"
-        };
-        VerticalFocus = VerticalFocus?.Trim().ToLowerInvariant() switch
-        {
-            "top" => "top",
-            "bottom" => "bottom",
-            _ => "center"
         };
         BannerPlaybackMode = BannerPlaybackMode?.Trim().ToLowerInvariant() switch
         {

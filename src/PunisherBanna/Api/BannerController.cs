@@ -202,8 +202,6 @@ public sealed class BannerController : ControllerBase
             RotateMilliseconds = settings.RotationSeconds * 1000,
             Rating = settings.RatingsVisible,
             Size = settings.DisplaySize,
-            FullBackdrop = settings.FullBackdrop,
-            Anchor = settings.VerticalFocus,
             Arrows = settings.ArrowButtons,
             Dots = settings.PageIndicators,
             BannerPlaybackMode = settings.BannerPlaybackMode,

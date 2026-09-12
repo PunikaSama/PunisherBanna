@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v260";
-    if (window.__punisherBannaV260 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v270";
+    if (window.__punisherBannaV270 || customElements.get(componentName)) {
         return;
     }
 
@@ -67,7 +67,7 @@
             height: 100%;
             inset: 0;
             object-fit: cover;
-            object-position: var(--image-anchor, center center);
+            object-position: center center;
             position: absolute;
             width: 100%;
         }
@@ -81,7 +81,7 @@
             height: 100%;
             inset: 0;
             object-fit: cover;
-            object-position: var(--image-anchor, center center);
+            object-position: center center;
             opacity: 0;
             pointer-events: none;
             position: absolute;
@@ -200,17 +200,6 @@
             transform: scale(1.06);
         }
         .audio-toggle[hidden] { display: none; }
-        @media (min-width: 601px) {
-            :host([fit="full"]) { max-width: 80rem; }
-            :host([fit="full"][size="small"]) { max-width: 64rem; }
-            :host([fit="full"][size="large"]) { max-width: 96rem; }
-            :host([fit="full"]) .stage {
-                aspect-ratio: var(--artwork-ratio, 16 / 9);
-                height: auto;
-            }
-            :host([fit="full"]) .artwork { object-fit: contain; }
-            :host([fit="full"]) .banner-video { object-fit: contain; }
-        }
         @media (max-width: 600px) {
             .stage { height: var(--mobile-height); }
             .caption { bottom: 2.1rem; left: 1.35rem; max-width: 75%; }
@@ -279,10 +268,6 @@
             this.position = 0;
             this.videoSourceCache.clear();
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
-            this.setAttribute("fit", payload.fullBackdrop === true ? "full" : "cover");
-            this.stage.style.setProperty("--artwork-ratio", "16 / 9");
-            const anchors = { top: "center top", center: "center center", bottom: "center bottom" };
-            this.stage.style.setProperty("--image-anchor", anchors[payload.anchor] || anchors.center);
             this.renderCards();
             this.bindStageEvents();
             this.startRotation();
@@ -342,13 +327,6 @@
             artwork.alt = "";
             artwork.draggable = false;
             artwork.loading = index === 0 ? "eager" : "lazy";
-            artwork.addEventListener("load", () => {
-                card.dataset.artworkWidth = String(artwork.naturalWidth);
-                card.dataset.artworkHeight = String(artwork.naturalHeight);
-                if (card.classList.contains("current")) {
-                    this.applyArtworkGeometry(card);
-                }
-            }, { once: true });
             artwork.src = this.imageUrl(slide.id, slide.artwork, 1920);
             card.appendChild(artwork);
 
@@ -935,19 +913,7 @@
                 page.classList.toggle("current", current);
                 page.setAttribute("aria-current", current ? "true" : "false");
             });
-            this.applyArtworkGeometry(this.stage.querySelectorAll(".card")[this.position]);
             this.scheduleVideo();
-        }
-
-        applyArtworkGeometry(card) {
-            if (this.getAttribute("fit") !== "full" || !card) {
-                return;
-            }
-            const width = Number(card.dataset.artworkWidth);
-            const height = Number(card.dataset.artworkHeight);
-            if (Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0) {
-                this.stage.style.setProperty("--artwork-ratio", `${width} / ${height}`);
-            }
         }
 
         startRotation() {
@@ -1087,6 +1053,6 @@
         schedule();
     }
 
-    window.__punisherBannaV260 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV270 = { observer: observer, schedule: schedule };
     start();
 }());
