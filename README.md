@@ -2,6 +2,10 @@
 
 PunisherBanna adds a customizable banner carousel with random movies or TV shows to the Jellyfin home screen.
 
+## Preview
+
+![PunisherBanna banner carousel preview](PunisherBannaPreview.png)
+
 ## Features
 
 - Show random movies or TV shows from a selected library
