@@ -61,7 +61,7 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v271",
+    "punisher-banna-slider-v272",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
@@ -82,7 +82,9 @@ for (const required of [
     "event.target.closest(\".card.current\")",
     "event.target.closest(\"button\")",
     "this.openDetails(slide.id)",
-    "window.location.hash = target.hash"
+    "window.location.hash = target.hash",
+    "const openOnRelease = !wasDragging",
+    "const slide = openOnRelease ? this.payload?.slides[this.position] : null"
 ]) {
     if (!client.includes(required)) {
         throw new Error(`Missing reliable video-banner navigation behavior: ${required}`);

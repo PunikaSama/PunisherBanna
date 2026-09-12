@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v271";
-    if (window.__punisherBannaV271 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v272";
+    if (window.__punisherBannaV272 || customElements.get(componentName)) {
         return;
     }
 
@@ -881,6 +881,13 @@
             }
             const wasDragging = this.dragging;
             const dx = event.clientX - this.pointer.x;
+            const openOnRelease = !wasDragging
+                && !cancelled
+                && !event.ctrlKey
+                && !event.metaKey
+                && !event.shiftKey
+                && !event.altKey;
+            const slide = openOnRelease ? this.payload?.slides[this.position] : null;
             if (wasDragging && !cancelled) {
                 event.preventDefault();
                 this.blockClick = true;
@@ -892,6 +899,14 @@
                 }
             }
             this.clearPointer();
+            if (slide) {
+                event.preventDefault();
+                this.blockClick = true;
+                window.clearTimeout(this.blockClickTimer);
+                this.blockClickTimer = window.setTimeout(() => { this.blockClick = false; }, 400);
+                this.openDetails(slide.id);
+                return;
+            }
             if (wasDragging) {
                 this.startRotation();
             }
@@ -1071,6 +1086,6 @@
         schedule();
     }
 
-    window.__punisherBannaV271 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV272 = { observer: observer, schedule: schedule };
     start();
 }());
