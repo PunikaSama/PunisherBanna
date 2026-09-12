@@ -61,7 +61,7 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v270",
+    "punisher-banna-slider-v271",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
@@ -75,6 +75,17 @@ for (const required of [
 ]) {
     if (!client.includes(required)) {
         throw new Error(`Missing webclient behavior: ${required}`);
+    }
+}
+
+for (const required of [
+    "event.target.closest(\".card.current\")",
+    "event.target.closest(\"button\")",
+    "this.openDetails(slide.id)",
+    "window.location.hash = target.hash"
+]) {
+    if (!client.includes(required)) {
+        throw new Error(`Missing reliable video-banner navigation behavior: ${required}`);
     }
 }
 

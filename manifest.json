@@ -9,20 +9,20 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.7.1.0",
+        "changelog": "Restores reliable banner navigation while an episode clip or trailer is playing. A normal click anywhere on the active banner now explicitly opens the owning series or movie and safely stops the preview stream first, while carousel arrows, page indicators, drag gestures, and the audio toggle remain independent controls.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.7.1.0/PunisherBanna_2.7.1.0.zip",
+        "checksum": "404cd5b22b4d1fb1082fd423df625241",
+        "timestamp": "2026-09-12 19:07:56"
+      },
+      {
         "version": "2.7.0.0",
         "changelog": "Removes the full-desktop-backdrop and vertical-background-position settings. Banners now consistently use the standard centered, image-filling presentation, and the obsolete settings have also been removed from the configuration model, API payload and web client.",
         "targetAbi": "12.0.0.0",
         "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.7.0.0/PunisherBanna_2.7.0.0.zip",
         "checksum": "e7e67f7ed35104698dbce458ab2b4061",
         "timestamp": "2026-09-12 18:21:57"
-      },
-      {
-        "version": "2.6.2.0",
-        "changelog": "Fixes the live banner volume percentage label. The settings page now uses Jellyfin-safe string construction, so the selected numeric percentage is displayed correctly instead of the placeholder word.",
-        "targetAbi": "12.0.0.0",
-        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.6.2.0/PunisherBanna_2.6.2.0.zip",
-        "checksum": "b163240f6a7c5b616906086f366e6538",
-        "timestamp": "2026-09-12 18:05:37"
       }
     ]
   }

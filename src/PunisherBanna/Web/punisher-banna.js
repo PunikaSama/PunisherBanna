@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v270";
-    if (window.__punisherBannaV270 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v271";
+    if (window.__punisherBannaV271 || customElements.get(componentName)) {
         return;
     }
 
@@ -816,6 +816,18 @@
                     window.clearTimeout(this.blockClickTimer);
                     event.preventDefault();
                     event.stopImmediatePropagation();
+                    return;
+                }
+
+                if (event.target.closest("button")) {
+                    return;
+                }
+
+                const card = event.target.closest(".card.current");
+                const slide = this.payload?.slides[this.position];
+                if (card && slide) {
+                    event.preventDefault();
+                    this.openDetails(slide.id);
                 }
             }, true);
         }
@@ -951,6 +963,12 @@
             target.hash = `#/details?id=${encodeURIComponent(id)}`;
             return target.toString();
         }
+
+        openDetails(id) {
+            const target = new URL(this.detailsUrl(id));
+            this.stopVideo(false);
+            window.location.hash = target.hash;
+        }
     }
 
     customElements.define(componentName, PunisherBannaCarousel);
@@ -1053,6 +1071,6 @@
         schedule();
     }
 
-    window.__punisherBannaV270 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV271 = { observer: observer, schedule: schedule };
     start();
 }());
