@@ -58,6 +58,10 @@ if (html.includes("LibraryLoadStatus") || html.includes("ArtworkKind") || html.i
     throw new Error("Removed settings text was reintroduced.");
 }
 
+if (html.includes("Changes all labels on this page immediately and is saved for administrators.")) {
+    throw new Error("The removed language-selector help text was reintroduced.");
+}
+
 for (const required of ["PluginVersion", "state.version"]) {
     if (!settingsScript.includes(required) && !html.includes(required)) {
         throw new Error(`Missing dynamic version behavior: ${required}`);
