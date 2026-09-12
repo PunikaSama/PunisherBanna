@@ -7,7 +7,7 @@
     <div id="PunisherBannaSettings"
          data-role="page"
          class="page type-interior pluginConfigurationPage"
-         data-require="emby-input,emby-button,emby-select,emby-checkbox,emby-slider">
+         data-require="emby-input,emby-button,emby-select,emby-checkbox">
         <div data-role="content">
             <div class="content-primary">
                 <form id="PunisherBannaSettingsForm">
@@ -107,10 +107,10 @@
                                     <span>Ton-Schaltfläche für Bannervideos erlauben</span>
                                 </label>
                                 <div class="fieldDescription" style="margin-bottom:1em">Videos starten aus Browser-Sicherheitsgründen stumm. Jeder Benutzer kann den Ton am Banner einschalten; seine Auswahl wird lokal gespeichert.</div>
-                                <div id="BannerAudioVolumeRow" class="inputContainer">
-                                    <label id="BannerAudioVolumeLabel" class="inputLabel inputLabelUnfocused" for="BannerAudioVolumePercent">Lautstärke: 20 %</label>
-                                    <input is="emby-slider" id="BannerAudioVolumePercent" class="emby-slider" type="range" min="0" max="100" step="1" value="20">
-                                    <div class="fieldDescription">Globale Lautstärke beim Einschalten des Bannertons; Standardwert: 20 %.</div>
+                                <div id="BannerAudioVolumeRow" style="margin:1.35em 0 1.85em">
+                                    <label id="BannerAudioVolumeLabel" for="BannerAudioVolumePercent" style="display:block;margin-bottom:.7em">Lautstärke: 20 %</label>
+                                    <input id="BannerAudioVolumePercent" type="range" min="0" max="100" step="1" value="20" style="display:block;width:100%;margin:0 0 .8em">
+                                    <div class="fieldDescription" style="margin:0">Globale Lautstärke beim Einschalten des Bannertons; Standardwert: 20 %.</div>
                                 </div>
                                 <div class="inputContainer">
                                     <label class="inputLabel inputLabelUnfocused" for="VideoStartDelayMilliseconds">Verzögerung vor Videostart in Millisekunden</label>

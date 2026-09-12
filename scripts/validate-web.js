@@ -115,6 +115,10 @@ if (!html.includes('value="image">Nur Bild (Standard)') || client.includes("yout
     throw new Error("Image mode must remain the default and external trailer services are not supported.");
 }
 
+if (html.includes('is="emby-slider"') || !html.includes('id="BannerAudioVolumeRow" style="margin:1.35em 0 1.85em"')) {
+    throw new Error("The audio volume control must use the stable, separately spaced native range layout.");
+}
+
 if (client.includes("isBanner")
     || client.includes("artwork=\"banner\"")
     || client.includes("__punisherBannaV202")
