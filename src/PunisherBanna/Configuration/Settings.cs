@@ -18,6 +18,8 @@ public sealed class Settings : BasePluginConfiguration
 
     public string DisplaySize { get; set; } = "standard";
 
+    public string MediaFit { get; set; } = "cover";
+
     public bool ArrowButtons { get; set; }
 
     public bool PageIndicators { get; set; } = true;
@@ -56,6 +58,9 @@ public sealed class Settings : BasePluginConfiguration
             "large" => "large",
             _ => "standard"
         };
+        MediaFit = string.Equals(MediaFit?.Trim(), "contain", StringComparison.OrdinalIgnoreCase)
+            ? "contain"
+            : "cover";
         BannerPlaybackMode = BannerPlaybackMode?.Trim().ToLowerInvariant() switch
         {
             "local-trailer" => "local-trailer",

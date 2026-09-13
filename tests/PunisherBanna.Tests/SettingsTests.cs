@@ -13,6 +13,7 @@ public sealed class SettingsTests
             VisibleSlides = 200,
             RotationSeconds = -1,
             DisplaySize = "wide",
+            MediaFit = "stretch",
             BannerPlaybackMode = "invalid",
             BannerAudioVolumePercent = 999,
             VideoStartDelayMilliseconds = 9000,
@@ -28,6 +29,7 @@ public sealed class SettingsTests
         Assert.Equal(20, settings.VisibleSlides);
         Assert.Equal(3, settings.RotationSeconds);
         Assert.Equal("standard", settings.DisplaySize);
+        Assert.Equal("cover", settings.MediaFit);
         Assert.False(settings.ArrowButtons);
         Assert.True(settings.PageIndicators);
         Assert.Equal("image", settings.BannerPlaybackMode);
@@ -58,6 +60,19 @@ public sealed class SettingsTests
 
         Assert.Equal(library.ToString("D"), settings.SourceLibrary);
         Assert.Equal(size.Trim().ToLowerInvariant(), settings.DisplaySize);
+    }
+
+    [Theory]
+    [InlineData("cover", "cover")]
+    [InlineData(" CONTAIN ", "contain")]
+    [InlineData("stretch", "cover")]
+    public void Sanitize_NormalizesMediaFit(string value, string expected)
+    {
+        var settings = new Settings { MediaFit = value };
+
+        settings.Sanitize();
+
+        Assert.Equal(expected, settings.MediaFit);
     }
 
     [Theory]

@@ -47,6 +47,15 @@
                             </select>
                         </div>
 
+                        <div class="selectContainer">
+                            <label class="selectLabel" for="MediaFit" data-i18n="mediaFit">Image and video framing</label>
+                            <select is="emby-select" id="MediaFit" class="emby-select-withcolor">
+                                <option value="cover" data-i18n="mediaFill">Fill banner (may crop)</option>
+                                <option value="contain" data-i18n="mediaComplete">Show complete image and video</option>
+                            </select>
+                            <div class="fieldDescription" data-i18n="mediaFitHelp">The banner remains large. Blurred artwork fills unused space when the complete medium is shown.</div>
+                        </div>
+
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="ArrowButtons" type="checkbox">
                             <span data-i18n="showArrows">Show navigation arrows</span>
@@ -172,6 +181,10 @@
                         small: "Small",
                         standard: "Standard",
                         large: "Large",
+                        mediaFit: "Image and video framing",
+                        mediaFill: "Fill banner (may crop)",
+                        mediaComplete: "Show complete image and video",
+                        mediaFitHelp: "The banner remains large. Blurred artwork fills unused space when the complete medium is shown.",
                         showArrows: "Show navigation arrows",
                         showDots: "Show navigation dots",
                         contentRotation: "Content and rotation",
@@ -223,6 +236,10 @@
                         small: "Klein",
                         standard: "Standard",
                         large: "Groß",
+                        mediaFit: "Darstellung von Bild und Video",
+                        mediaFill: "Banner ausfüllen (kann beschneiden)",
+                        mediaComplete: "Vollständiges Bild und Video anzeigen",
+                        mediaFitHelp: "Der Banner bleibt groß. Freie Flächen werden beim vollständigen Medium mit weichgezeichnetem Artwork gefüllt.",
                         showArrows: "Navigationspfeile anzeigen",
                         showDots: "Navigationspunkte anzeigen",
                         contentRotation: "Inhalt und Wechsel",
@@ -444,6 +461,7 @@
                         element("DisplaySize").value = ["small", "standard", "large"].includes(settings.DisplaySize)
                             ? settings.DisplaySize
                             : "standard";
+                        element("MediaFit").value = settings.MediaFit === "contain" ? "contain" : "cover";
                         element("ArrowButtons").checked = settings.ArrowButtons === true;
                         element("PageIndicators").checked = settings.PageIndicators !== false;
                         element("RatingsVisible").checked = settings.RatingsVisible !== false;
@@ -480,6 +498,7 @@
                         settings.SourceLibrary = element("SourceLibrary").value;
                         settings.VisibleSlides = boundedInteger(element("VisibleSlides").value, 1, 20, 5);
                         settings.DisplaySize = element("DisplaySize").value;
+                        settings.MediaFit = element("MediaFit").value === "contain" ? "contain" : "cover";
                         settings.ArrowButtons = element("ArrowButtons").checked;
                         settings.PageIndicators = element("PageIndicators").checked;
                         settings.RatingsVisible = element("RatingsVisible").checked;

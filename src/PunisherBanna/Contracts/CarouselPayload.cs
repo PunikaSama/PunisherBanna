@@ -19,6 +19,9 @@ public sealed class CarouselPayload
     [JsonPropertyName("size")]
     public required string Size { get; init; }
 
+    [JsonPropertyName("mediaFit")]
+    public required string MediaFit { get; init; }
+
     [JsonPropertyName("arrows")]
     public bool Arrows { get; init; }
 

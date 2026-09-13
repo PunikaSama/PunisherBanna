@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.8.0.0",
+        "changelog": "Adds an optional complete-media banner mode that keeps the selected banner size while showing the entire image and full video or trailer without cropping. Softly blurred artwork fills unused space, the existing cropped fill mode remains the default, and the new setting is available in English and German.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.8.0.0/PunisherBanna_2.8.0.0.zip",
+        "checksum": "17dc7ba2474e72e1cd70cc711415b269",
+        "timestamp": "2026-09-14 01:48:45"
+      },
+      {
         "version": "2.7.4.0",
         "changelog": "Removes the explanatory sentence below the settings language selector for a cleaner layout. English remains the default, German remains selectable, and the saved bilingual settings behavior is unchanged.",
         "targetAbi": "12.0.0.0",

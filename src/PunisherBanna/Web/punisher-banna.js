@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v272";
-    if (window.__punisherBannaV272 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v280";
+    if (window.__punisherBannaV280 || customElements.get(componentName)) {
         return;
     }
 
@@ -71,6 +71,21 @@
             position: absolute;
             width: 100%;
         }
+        .artwork-fill {
+            filter: blur(2rem) brightness(.48) saturate(1.15);
+            height: 100%;
+            inset: 0;
+            object-fit: cover;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            transform: scale(1.1);
+            transition: opacity 380ms ease;
+            width: 100%;
+        }
+        :host([media-fit="contain"]) .artwork-fill { opacity: 1; }
+        :host([media-fit="contain"]) .artwork,
+        :host([media-fit="contain"]) .banner-video { object-fit: contain; }
         .video-host {
             inset: 0;
             overflow: hidden;
@@ -268,6 +283,7 @@
             this.position = 0;
             this.videoSourceCache.clear();
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
+            this.setAttribute("media-fit", payload.mediaFit === "contain" ? "contain" : "cover");
             this.renderCards();
             this.bindStageEvents();
             this.startRotation();
@@ -322,13 +338,21 @@
             card.setAttribute("aria-hidden", index === 0 ? "false" : "true");
             card.setAttribute("aria-label", `${slide.title} öffnen`);
 
+            const artworkUrl = this.imageUrl(slide.id, slide.artwork, 1920);
+            const artworkFill = document.createElement("img");
+            artworkFill.className = "artwork-fill";
+            artworkFill.alt = "";
+            artworkFill.draggable = false;
+            artworkFill.loading = index === 0 ? "eager" : "lazy";
+            artworkFill.src = artworkUrl;
+
             const artwork = document.createElement("img");
             artwork.className = "artwork";
             artwork.alt = "";
             artwork.draggable = false;
             artwork.loading = index === 0 ? "eager" : "lazy";
-            artwork.src = this.imageUrl(slide.id, slide.artwork, 1920);
-            card.appendChild(artwork);
+            artwork.src = artworkUrl;
+            card.append(artworkFill, artwork);
 
             const shade = document.createElement("div");
             shade.className = "shade";
@@ -1086,6 +1110,6 @@
         schedule();
     }
 
-    window.__punisherBannaV272 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV280 = { observer: observer, schedule: schedule };
     start();
 }());

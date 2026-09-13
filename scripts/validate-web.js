@@ -29,6 +29,7 @@ for (const required of [
     "SourceLibrary",
     "VisibleSlides",
     "DisplaySize",
+    "MediaFit",
     "ArrowButtons",
     "PageIndicators",
     "RatingsVisible",
@@ -70,7 +71,7 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v272",
+    "punisher-banna-slider-v280",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
@@ -123,6 +124,17 @@ for (const required of [
 ]) {
     if (!client.includes(required)) {
         throw new Error(`Missing safe banner-video behavior: ${required}`);
+    }
+}
+
+for (const required of [
+    'media-fit="contain"',
+    "artwork-fill",
+    "object-fit: contain",
+    'payload.mediaFit === "contain"'
+]) {
+    if (!client.includes(required)) {
+        throw new Error(`Missing complete banner media behavior: ${required}`);
     }
 }
 
