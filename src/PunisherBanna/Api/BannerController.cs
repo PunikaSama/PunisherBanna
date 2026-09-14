@@ -203,6 +203,8 @@ public sealed class BannerController : ControllerBase
             Rating = settings.RatingsVisible,
             Size = settings.DisplaySize,
             MediaFit = settings.MediaFit,
+            CustomBannerWidth = settings.CustomBannerWidth,
+            BannerWidthPercent = settings.BannerWidthPercent,
             Arrows = settings.ArrowButtons,
             Dots = settings.PageIndicators,
             BannerPlaybackMode = settings.BannerPlaybackMode,

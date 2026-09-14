@@ -56,6 +56,23 @@
                             <div class="fieldDescription" data-i18n="mediaFitHelp">The banner remains large. Blurred artwork fills unused space when the complete medium is shown.</div>
                         </div>
 
+                        <div style="margin:1.25em 0 1.5em;padding:1em;border:1px solid rgba(255,255,255,.14);border-radius:.55em;background:rgba(0,0,0,.16)">
+                            <label class="emby-checkbox-label">
+                                <input is="emby-checkbox" id="CustomBannerWidth" type="checkbox">
+                                <span data-i18n="customBannerWidth">Use custom centered banner width</span>
+                            </label>
+                            <div id="BannerWidthOptions" style="margin-top:1em">
+                                <label id="BannerWidthLabel" for="BannerWidthPercent" style="display:block;margin-bottom:.7em">Banner width: 90%</label>
+                                <input id="BannerWidthPercent" type="range" min="70" max="100" step="1" value="90" style="display:block;width:100%;margin:0 0 .8em">
+                                <div class="fieldDescription" data-i18n="bannerWidthHelp">Reduces the banner equally on the left and right. The height remains unchanged.</div>
+                                <div style="height:5.5em;margin-top:1em;padding:.55em;border-radius:.45em;background:rgba(0,0,0,.35);overflow:hidden" aria-hidden="true">
+                                    <div id="BannerWidthPreview" style="height:100%;width:90%;margin:0 auto;border-radius:.35em;background:linear-gradient(120deg,#082a3d,#00a4dc 48%,#8b32dc);box-shadow:0 .2em .8em rgba(0,0,0,.35);transition:width 100ms ease;position:relative">
+                                        <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.62),transparent 60%)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <label class="emby-checkbox-label">
                             <input is="emby-checkbox" id="ArrowButtons" type="checkbox">
                             <span data-i18n="showArrows">Show navigation arrows</span>
@@ -185,6 +202,9 @@
                         mediaFill: "Fill banner (may crop)",
                         mediaComplete: "Show complete image and video",
                         mediaFitHelp: "The banner remains large. Blurred artwork fills unused space when the complete medium is shown.",
+                        customBannerWidth: "Use custom centered banner width",
+                        bannerWidth: "Banner width: {value}%",
+                        bannerWidthHelp: "Reduces the banner equally on the left and right. The height remains unchanged.",
                         showArrows: "Show navigation arrows",
                         showDots: "Show navigation dots",
                         contentRotation: "Content and rotation",
@@ -240,6 +260,9 @@
                         mediaFill: "Banner ausfüllen (kann beschneiden)",
                         mediaComplete: "Vollständiges Bild und Video anzeigen",
                         mediaFitHelp: "Der Banner bleibt groß. Freie Flächen werden beim vollständigen Medium mit weichgezeichnetem Artwork gefüllt.",
+                        customBannerWidth: "Benutzerdefinierte zentrierte Bannerbreite verwenden",
+                        bannerWidth: "Bannerbreite: {value} %",
+                        bannerWidthHelp: "Verkleinert den Banner links und rechts gleichmäßig. Die Höhe bleibt unverändert.",
                         showArrows: "Navigationspfeile anzeigen",
                         showDots: "Navigationspunkte anzeigen",
                         contentRotation: "Inhalt und Wechsel",
@@ -314,6 +337,7 @@
                         node.textContent = translate(node.dataset.i18n);
                     });
                     updateAudioVolumeLabel();
+                    updateBannerWidthControls();
                     renderDependencyState();
                 }
 
@@ -349,6 +373,15 @@
                     const volume = boundedInteger(element("BannerAudioVolumePercent").value, 0, 100, 20);
                     element("BannerAudioVolumePercent").value = volume;
                     element("BannerAudioVolumeLabel").textContent = translate("volume").replace("{value}", String(volume));
+                }
+
+                function updateBannerWidthControls() {
+                    const enabled = element("CustomBannerWidth").checked;
+                    const width = boundedInteger(element("BannerWidthPercent").value, 70, 100, 90);
+                    element("BannerWidthPercent").value = width;
+                    element("BannerWidthOptions").style.display = enabled ? "block" : "none";
+                    element("BannerWidthLabel").textContent = translate("bannerWidth").replace("{value}", String(width));
+                    element("BannerWidthPreview").style.width = width + "%";
                 }
 
                 function resetVideoSettings() {
@@ -462,6 +495,8 @@
                             ? settings.DisplaySize
                             : "standard";
                         element("MediaFit").value = settings.MediaFit === "contain" ? "contain" : "cover";
+                        element("CustomBannerWidth").checked = settings.CustomBannerWidth === true;
+                        element("BannerWidthPercent").value = boundedInteger(settings.BannerWidthPercent, 70, 100, 90);
                         element("ArrowButtons").checked = settings.ArrowButtons === true;
                         element("PageIndicators").checked = settings.PageIndicators !== false;
                         element("RatingsVisible").checked = settings.RatingsVisible !== false;
@@ -478,6 +513,7 @@
                         element("VideoEndBehavior").value = settings.VideoEndBehavior === "loop" ? "loop" : "image";
                         updateRotationRow();
                         updateAudioVolumeLabel();
+                        updateBannerWidthControls();
                         updateVideoOptions();
                         await refreshDependencyState();
                     } catch (error) {
@@ -499,6 +535,8 @@
                         settings.VisibleSlides = boundedInteger(element("VisibleSlides").value, 1, 20, 5);
                         settings.DisplaySize = element("DisplaySize").value;
                         settings.MediaFit = element("MediaFit").value === "contain" ? "contain" : "cover";
+                        settings.CustomBannerWidth = element("CustomBannerWidth").checked;
+                        settings.BannerWidthPercent = boundedInteger(element("BannerWidthPercent").value, 70, 100, 90);
                         settings.ArrowButtons = element("ArrowButtons").checked;
                         settings.PageIndicators = element("PageIndicators").checked;
                         settings.RatingsVisible = element("RatingsVisible").checked;
@@ -532,6 +570,8 @@
                     element("BannerPlaybackMode").addEventListener("change", updateVideoOptions);
                     element("BannerAudioEnabled").addEventListener("change", updateVideoOptions);
                     element("BannerAudioVolumePercent").addEventListener("input", updateAudioVolumeLabel);
+                    element("CustomBannerWidth").addEventListener("change", updateBannerWidthControls);
+                    element("BannerWidthPercent").addEventListener("input", updateBannerWidthControls);
                     element("ResetVideoSettings").addEventListener("click", resetVideoSettings);
                     window.setTimeout(showSettings, 0);
                 }

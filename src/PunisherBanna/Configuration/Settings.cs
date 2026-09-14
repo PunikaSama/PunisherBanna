@@ -20,6 +20,10 @@ public sealed class Settings : BasePluginConfiguration
 
     public string MediaFit { get; set; } = "cover";
 
+    public bool CustomBannerWidth { get; set; }
+
+    public int BannerWidthPercent { get; set; } = 90;
+
     public bool ArrowButtons { get; set; }
 
     public bool PageIndicators { get; set; } = true;
@@ -61,6 +65,7 @@ public sealed class Settings : BasePluginConfiguration
         MediaFit = string.Equals(MediaFit?.Trim(), "contain", StringComparison.OrdinalIgnoreCase)
             ? "contain"
             : "cover";
+        BannerWidthPercent = Math.Clamp(BannerWidthPercent, 70, 100);
         BannerPlaybackMode = BannerPlaybackMode?.Trim().ToLowerInvariant() switch
         {
             "local-trailer" => "local-trailer",

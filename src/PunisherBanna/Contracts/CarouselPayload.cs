@@ -22,6 +22,12 @@ public sealed class CarouselPayload
     [JsonPropertyName("mediaFit")]
     public required string MediaFit { get; init; }
 
+    [JsonPropertyName("customBannerWidth")]
+    public bool CustomBannerWidth { get; init; }
+
+    [JsonPropertyName("bannerWidthPercent")]
+    public int BannerWidthPercent { get; init; }
+
     [JsonPropertyName("arrows")]
     public bool Arrows { get; init; }
 

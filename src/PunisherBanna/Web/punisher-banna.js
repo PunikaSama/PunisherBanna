@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v280";
-    if (window.__punisherBannaV280 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v281";
+    if (window.__punisherBannaV281 || customElements.get(componentName)) {
         return;
     }
 
@@ -28,6 +28,7 @@
             --radius: .8rem;
             width: 98%;
         }
+        :host([custom-width]) { width: var(--custom-banner-width); }
         * { box-sizing: border-box; }
         .stage {
             background: #141414;
@@ -284,6 +285,14 @@
             this.videoSourceCache.clear();
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
             this.setAttribute("media-fit", payload.mediaFit === "contain" ? "contain" : "cover");
+            if (payload.customBannerWidth === true) {
+                const width = Math.min(100, Math.max(70, Number(payload.bannerWidthPercent) || 90));
+                this.setAttribute("custom-width", "");
+                this.style.setProperty("--custom-banner-width", width + "%");
+            } else {
+                this.removeAttribute("custom-width");
+                this.style.removeProperty("--custom-banner-width");
+            }
             this.renderCards();
             this.bindStageEvents();
             this.startRotation();
@@ -1110,6 +1119,6 @@
         schedule();
     }
 
-    window.__punisherBannaV280 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV281 = { observer: observer, schedule: schedule };
     start();
 }());

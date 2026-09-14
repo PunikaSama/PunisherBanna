@@ -9,6 +9,14 @@
     "imageUrl": "https://raw.githubusercontent.com/PunikaSama/PunisherBanna/main/logo.png",
     "versions": [
       {
+        "version": "2.8.1.0",
+        "changelog": "Adds an optional custom centered banner-width mode with a 70 to 100 percent slider and live preview. Existing installations retain their current width until the new mode is enabled. The setting is available in English and German and works independently of banner size and complete-media framing.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/PunikaSama/PunisherBanna/releases/download/v2.8.1.0/PunisherBanna_2.8.1.0.zip",
+        "checksum": "dc585c9a767fb3f0081a50aac712c8be",
+        "timestamp": "2026-09-14 02:07:23"
+      },
+      {
         "version": "2.8.0.0",
         "changelog": "Adds an optional complete-media banner mode that keeps the selected banner size while showing the entire image and full video or trailer without cropping. Softly blurred artwork fills unused space, the existing cropped fill mode remains the default, and the new setting is available in English and German.",
         "targetAbi": "12.0.0.0",

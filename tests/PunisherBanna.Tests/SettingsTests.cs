@@ -14,6 +14,7 @@ public sealed class SettingsTests
             RotationSeconds = -1,
             DisplaySize = "wide",
             MediaFit = "stretch",
+            BannerWidthPercent = 20,
             BannerPlaybackMode = "invalid",
             BannerAudioVolumePercent = 999,
             VideoStartDelayMilliseconds = 9000,
@@ -30,6 +31,8 @@ public sealed class SettingsTests
         Assert.Equal(3, settings.RotationSeconds);
         Assert.Equal("standard", settings.DisplaySize);
         Assert.Equal("cover", settings.MediaFit);
+        Assert.False(settings.CustomBannerWidth);
+        Assert.Equal(70, settings.BannerWidthPercent);
         Assert.False(settings.ArrowButtons);
         Assert.True(settings.PageIndicators);
         Assert.Equal("image", settings.BannerPlaybackMode);
@@ -73,6 +76,20 @@ public sealed class SettingsTests
         settings.Sanitize();
 
         Assert.Equal(expected, settings.MediaFit);
+    }
+
+    [Theory]
+    [InlineData(60, 70)]
+    [InlineData(88, 88)]
+    [InlineData(110, 100)]
+    public void Sanitize_ClampsCustomBannerWidth(int value, int expected)
+    {
+        var settings = new Settings { CustomBannerWidth = true, BannerWidthPercent = value };
+
+        settings.Sanitize();
+
+        Assert.True(settings.CustomBannerWidth);
+        Assert.Equal(expected, settings.BannerWidthPercent);
     }
 
     [Theory]

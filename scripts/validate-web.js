@@ -30,6 +30,9 @@ for (const required of [
     "VisibleSlides",
     "DisplaySize",
     "MediaFit",
+    "CustomBannerWidth",
+    "BannerWidthPercent",
+    "BannerWidthPreview",
     "ArrowButtons",
     "PageIndicators",
     "RatingsVisible",
@@ -71,7 +74,7 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v280",
+    "punisher-banna-slider-v281",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
@@ -135,6 +138,17 @@ for (const required of [
 ]) {
     if (!client.includes(required)) {
         throw new Error(`Missing complete banner media behavior: ${required}`);
+    }
+}
+
+for (const required of [
+    "custom-width",
+    "--custom-banner-width",
+    "payload.customBannerWidth === true",
+    "payload.bannerWidthPercent"
+]) {
+    if (!client.includes(required)) {
+        throw new Error(`Missing custom banner width behavior: ${required}`);
     }
 }
 
