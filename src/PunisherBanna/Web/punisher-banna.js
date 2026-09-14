@@ -1,8 +1,8 @@
 (function () {
     "use strict";
 
-    const componentName = "punisher-banna-slider-v281";
-    if (window.__punisherBannaV281 || customElements.get(componentName)) {
+    const componentName = "punisher-banna-slider-v282";
+    if (window.__punisherBannaV282 || customElements.get(componentName)) {
         return;
     }
 
@@ -127,7 +127,7 @@
             -webkit-user-drag: none;
             filter: drop-shadow(0 .15rem .35rem rgba(0, 0, 0, .65));
             max-height: clamp(4.5rem, 10vw, 8.5rem);
-            max-width: min(31rem, 70vw);
+            max-width: min(31rem, 100%);
             object-fit: contain;
             object-position: left bottom;
         }
@@ -149,6 +149,16 @@
             position: absolute;
             text-shadow: 0 .1rem .3rem #000;
             z-index: 2;
+        }
+        :host([custom-width]) .caption {
+            left: 4%;
+            max-width: none;
+            right: 4%;
+        }
+        :host([custom-width]) .facts { left: 4%; }
+        :host([custom-width]) .title {
+            font-size: clamp(1.15rem, 3vw, 3rem);
+            overflow-wrap: anywhere;
         }
         .score { color: #f7ce46; }
         .step {
@@ -286,7 +296,7 @@
             this.setAttribute("size", ["small", "standard", "large"].includes(payload.size) ? payload.size : "standard");
             this.setAttribute("media-fit", payload.mediaFit === "contain" ? "contain" : "cover");
             if (payload.customBannerWidth === true) {
-                const width = Math.min(100, Math.max(70, Number(payload.bannerWidthPercent) || 90));
+                const width = Math.min(100, Math.max(45, Number(payload.bannerWidthPercent) || 90));
                 this.setAttribute("custom-width", "");
                 this.style.setProperty("--custom-banner-width", width + "%");
             } else {
@@ -1119,6 +1129,6 @@
         schedule();
     }
 
-    window.__punisherBannaV281 = { observer: observer, schedule: schedule };
+    window.__punisherBannaV282 = { observer: observer, schedule: schedule };
     start();
 }());

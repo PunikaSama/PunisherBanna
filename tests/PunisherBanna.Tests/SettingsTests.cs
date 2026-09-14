@@ -32,7 +32,7 @@ public sealed class SettingsTests
         Assert.Equal("standard", settings.DisplaySize);
         Assert.Equal("cover", settings.MediaFit);
         Assert.False(settings.CustomBannerWidth);
-        Assert.Equal(70, settings.BannerWidthPercent);
+        Assert.Equal(45, settings.BannerWidthPercent);
         Assert.False(settings.ArrowButtons);
         Assert.True(settings.PageIndicators);
         Assert.Equal("image", settings.BannerPlaybackMode);
@@ -79,7 +79,8 @@ public sealed class SettingsTests
     }
 
     [Theory]
-    [InlineData(60, 70)]
+    [InlineData(20, 45)]
+    [InlineData(45, 45)]
     [InlineData(88, 88)]
     [InlineData(110, 100)]
     public void Sanitize_ClampsCustomBannerWidth(int value, int expected)

@@ -74,7 +74,7 @@ for (const required of ["PluginVersion", "state.version"]) {
 
 for (const required of [
     "customElements.define",
-    "punisher-banna-slider-v281",
+    "punisher-banna-slider-v282",
     "new PunisherBannaCarousel()",
     "attachShadow",
     "pointerdown",
@@ -145,7 +145,10 @@ for (const required of [
     "custom-width",
     "--custom-banner-width",
     "payload.customBannerWidth === true",
-    "payload.bannerWidthPercent"
+    "payload.bannerWidthPercent",
+    "Math.max(45",
+    ":host([custom-width]) .caption",
+    "max-width: min(31rem, 100%)"
 ]) {
     if (!client.includes(required)) {
         throw new Error(`Missing custom banner width behavior: ${required}`);

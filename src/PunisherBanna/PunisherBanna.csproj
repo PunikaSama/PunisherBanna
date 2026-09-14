@@ -3,9 +3,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Jellyfin.Plugin.PunisherBanna</AssemblyName>
     <RootNamespace>PunisherBanna</RootNamespace>
-    <Version>2.8.1.0</Version>
-    <AssemblyVersion>2.8.1.0</AssemblyVersion>
-    <FileVersion>2.8.1.0</FileVersion>
+    <Version>2.8.2.0</Version>
+    <AssemblyVersion>2.8.2.0</AssemblyVersion>
+    <FileVersion>2.8.2.0</FileVersion>
     <Description>Configurable movie and series banners for Jellyfin 12.</Description>
     <RepositoryUrl>https://github.com/PunikaSama/PunisherBanna</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

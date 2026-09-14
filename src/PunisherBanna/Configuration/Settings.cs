@@ -65,7 +65,7 @@ public sealed class Settings : BasePluginConfiguration
         MediaFit = string.Equals(MediaFit?.Trim(), "contain", StringComparison.OrdinalIgnoreCase)
             ? "contain"
             : "cover";
-        BannerWidthPercent = Math.Clamp(BannerWidthPercent, 70, 100);
+        BannerWidthPercent = Math.Clamp(BannerWidthPercent, 45, 100);
         BannerPlaybackMode = BannerPlaybackMode?.Trim().ToLowerInvariant() switch
         {
             "local-trailer" => "local-trailer",

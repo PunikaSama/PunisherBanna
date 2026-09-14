@@ -63,7 +63,7 @@
                             </label>
                             <div id="BannerWidthOptions" style="margin-top:1em">
                                 <label id="BannerWidthLabel" for="BannerWidthPercent" style="display:block;margin-bottom:.7em">Banner width: 90%</label>
-                                <input id="BannerWidthPercent" type="range" min="70" max="100" step="1" value="90" style="display:block;width:100%;margin:0 0 .8em">
+                                <input id="BannerWidthPercent" type="range" min="45" max="100" step="1" value="90" style="display:block;width:100%;margin:0 0 .8em">
                                 <div class="fieldDescription" data-i18n="bannerWidthHelp">Reduces the banner equally on the left and right. The height remains unchanged.</div>
                                 <div style="height:5.5em;margin-top:1em;padding:.55em;border-radius:.45em;background:rgba(0,0,0,.35);overflow:hidden" aria-hidden="true">
                                     <div id="BannerWidthPreview" style="height:100%;width:90%;margin:0 auto;border-radius:.35em;background:linear-gradient(120deg,#082a3d,#00a4dc 48%,#8b32dc);box-shadow:0 .2em .8em rgba(0,0,0,.35);transition:width 100ms ease;position:relative">
@@ -204,7 +204,7 @@
                         mediaFitHelp: "The banner remains large. Blurred artwork fills unused space when the complete medium is shown.",
                         customBannerWidth: "Use custom centered banner width",
                         bannerWidth: "Banner width: {value}%",
-                        bannerWidthHelp: "Reduces the banner equally on the left and right. The height remains unchanged.",
+                        bannerWidthHelp: "Reduces the banner equally on the left and right down to the approximate video width. The height remains unchanged.",
                         showArrows: "Show navigation arrows",
                         showDots: "Show navigation dots",
                         contentRotation: "Content and rotation",
@@ -262,7 +262,7 @@
                         mediaFitHelp: "Der Banner bleibt groß. Freie Flächen werden beim vollständigen Medium mit weichgezeichnetem Artwork gefüllt.",
                         customBannerWidth: "Benutzerdefinierte zentrierte Bannerbreite verwenden",
                         bannerWidth: "Bannerbreite: {value} %",
-                        bannerWidthHelp: "Verkleinert den Banner links und rechts gleichmäßig. Die Höhe bleibt unverändert.",
+                        bannerWidthHelp: "Verkleinert den Banner links und rechts gleichmäßig bis ungefähr auf die Videobreite. Die Höhe bleibt unverändert.",
                         showArrows: "Navigationspfeile anzeigen",
                         showDots: "Navigationspunkte anzeigen",
                         contentRotation: "Inhalt und Wechsel",
@@ -377,7 +377,7 @@
 
                 function updateBannerWidthControls() {
                     const enabled = element("CustomBannerWidth").checked;
-                    const width = boundedInteger(element("BannerWidthPercent").value, 70, 100, 90);
+                    const width = boundedInteger(element("BannerWidthPercent").value, 45, 100, 90);
                     element("BannerWidthPercent").value = width;
                     element("BannerWidthOptions").style.display = enabled ? "block" : "none";
                     element("BannerWidthLabel").textContent = translate("bannerWidth").replace("{value}", String(width));
@@ -496,7 +496,7 @@
                             : "standard";
                         element("MediaFit").value = settings.MediaFit === "contain" ? "contain" : "cover";
                         element("CustomBannerWidth").checked = settings.CustomBannerWidth === true;
-                        element("BannerWidthPercent").value = boundedInteger(settings.BannerWidthPercent, 70, 100, 90);
+                        element("BannerWidthPercent").value = boundedInteger(settings.BannerWidthPercent, 45, 100, 90);
                         element("ArrowButtons").checked = settings.ArrowButtons === true;
                         element("PageIndicators").checked = settings.PageIndicators !== false;
                         element("RatingsVisible").checked = settings.RatingsVisible !== false;
@@ -536,7 +536,7 @@
                         settings.DisplaySize = element("DisplaySize").value;
                         settings.MediaFit = element("MediaFit").value === "contain" ? "contain" : "cover";
                         settings.CustomBannerWidth = element("CustomBannerWidth").checked;
-                        settings.BannerWidthPercent = boundedInteger(element("BannerWidthPercent").value, 70, 100, 90);
+                        settings.BannerWidthPercent = boundedInteger(element("BannerWidthPercent").value, 45, 100, 90);
                         settings.ArrowButtons = element("ArrowButtons").checked;
                         settings.PageIndicators = element("PageIndicators").checked;
                         settings.RatingsVisible = element("RatingsVisible").checked;

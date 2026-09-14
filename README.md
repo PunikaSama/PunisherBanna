@@ -11,7 +11,7 @@ PunisherBanna adds a customizable banner carousel with random movies or TV shows
 - Show random movies or TV shows from a selected library
 - Customize the number, size, and automatic rotation of banners
 - Optionally show complete images and videos inside a large banner with softly blurred artwork filling unused space
-- Optionally center the banner at a custom width from 70 to 100 percent, with a live settings preview
+- Optionally center the banner at a custom width from 45 to 100 percent, with a live settings preview and responsive logo placement
 - Optionally show ratings and navigation controls
 - Optionally replace the active banner image with a muted local trailer or a short server-hosted movie/episode preview
 - Automatically prefer a local trailer, then a media preview, and always retain the original image as a fallback
