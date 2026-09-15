@@ -31,5 +31,5 @@ jobs:
       - name: Upload package
         uses: actions/upload-artifact@v4
         with:
-          name: PunisherBanna-1.0.0.0
-          path: artifacts/PunisherBanna_1.0.0.0.zip
+          name: PunisherBanna-package
+          path: artifacts/PunisherBanna_*.zip
